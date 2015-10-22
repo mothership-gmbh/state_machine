@@ -1,6 +1,6 @@
 Mothership\StateMachine
 -------------------------------------
-**Mothership StateMachine** extends *Finite/StateMachine* presents in this extension
+**Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite)
 
 #Features
 - Configuration of each StateMachine can be read from a *yaml* file
