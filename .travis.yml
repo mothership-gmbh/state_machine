@@ -1,0 +1,7 @@
+language: php
+php:
+- 5.6
+before_script:
+  - sudo apt-get install graphviz
+  - composer install
+script: phpunit --coverage-text
