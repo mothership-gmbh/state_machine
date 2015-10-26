@@ -1,6 +1,6 @@
 Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
 -----------------------------------------
-State Machine pattern
+A PHP based state machine implementation.
 
 #Features
 - Create, configure and run a complete State Machine.
