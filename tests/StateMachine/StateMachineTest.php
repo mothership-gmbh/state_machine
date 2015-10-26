@@ -29,6 +29,7 @@
 
 use Exemple\Simple\SimpleStateMachine;
 use Exemple\IfConditions\IfConditionsStateMachine;
+use Exemple\BooleanConditions\BooleanConditionsStateMachine;
 
 class StateMachineTest extends MothershipBaseTestCase
 {
