@@ -1,5 +1,6 @@
-Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=develop)
+Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
 -----------------------------------------
+State Machine pattern
 
 #Features
 - Create, configure and run a complete State Machine.
@@ -121,7 +122,46 @@ sudo apt-get install graphviz
 ```
 phpunit --coverage-text
 ```
-- Develop branch is merge on master only if all tests passed with a coverage major or equal to 90%.
+- Results of the last master unit tests:
+```
+Code Coverage Report:      
+
+  2015-10-26 14:57:04      
+
+                           
+
+ Summary:                  
+
+  Classes: 50.00% (6/12)   
+
+  Methods: 32.61% (15/46)  
+
+  Lines:   60.44% (165/273)
+
+\Exemple\Simple::SimpleWorkflow
+
+  Methods:  75.00% ( 3/ 4)   Lines:  75.00% (  3/  4)
+
+\Mothership\Exception::ExceptionAbstract
+
+  Methods:   0.00% ( 0/ 4)   Lines:  45.71% ( 16/ 35)
+
+\Mothership\StateMachine::StateMachineAbstract
+
+  Methods:   0.00% ( 0/ 5)   Lines:  75.41% ( 46/ 61)
+
+\Mothership\StateMachine::Status
+
+  Methods:  38.46% ( 5/13)   Lines:  42.03% ( 29/ 69)
+
+\Mothership\StateMachine::Transition
+
+  Methods:  55.56% ( 5/ 9)   Lines:  68.00% ( 17/ 25)
+
+\Mothership\StateMachine::WorkflowAbstract
+
+  Methods:  18.18% ( 2/11)   Lines:  68.35% ( 54/ 79)
+```
 
 #Notes
 - **Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite) presents in this extension
