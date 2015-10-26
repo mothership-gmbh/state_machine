@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Mothership\Exception\ExceptionAbstract</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Mothership.html">
+						Mothership<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Mothership.Exception.html">
+						Exception<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Mothership.Exception.StateMachine.html">
+						StateMachine					</a>
+
+						</li>
+							</ul></li>
+				<li>
+					<a href="namespace-Mothership.StateMachine.html">
+						StateMachine					</a>
+
+						</li>
+							</ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li class="active"><a href="class-Mothership.Exception.ExceptionAbstract.html">ExceptionAbstract</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Mothership.Exception.html" title="Summary of Mothership\Exception"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class ExceptionAbstract</h1>
+
+
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+Exception
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Mothership\Exception\ExceptionAbstract</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+	<div>
+		<h4>Direct known subclasses</h4>
+			<a href="class-Mothership.Exception.StateMachine.StateMachineAdapterException.html">Mothership\Exception\StateMachine\StateMachineAdapterException</a>, 
+			<a href="class-Mothership.Exception.StateMachine.StateMachineException.html">Mothership\Exception\StateMachine\StateMachineException</a>, 
+			<a href="class-Mothership.Exception.StateMachine.StatusException.html">Mothership\Exception\StateMachine\StatusException</a>, 
+			<a href="class-Mothership.Exception.StateMachine.TransitionException.html">Mothership\Exception\StateMachine\TransitionException</a>, 
+			<a href="class-Mothership.Exception.StateMachine.WorkflowException.html">Mothership\Exception\StateMachine\WorkflowException</a>
+	</div>
+
+
+
+
+
+
+	<div class="info">
+		<b>Abstract</b><br>
+		
+		<b>Namespace:</b> <a href="namespace-Mothership.html">Mothership</a>\<a href="namespace-Mothership.Exception.html">Exception</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-Mothership.Exception.ExceptionAbstract.html#35-113" title="Go to source code">Mothership/Exception/ExceptionAbstract.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Mothership.Exception.ExceptionAbstract.html#40-65" title="Go to source code">__construct</a>( <span>string <var>$message</var> = <span class="php-quote">&quot;&quot;</span></span>, <span>integer <var>$code</var> = <span class="php-num">0</span></span>, <span>Exception <var>$previous</var> = <span class="php-keyword1">null</span></span>, <span>Symfony\Component\Console\Output\OutputInterface <var>$output</var> = <span class="php-keyword1">null</span></span>, <span>boolean|true <var>$send_alert</var> = <span class="php-keyword1">true</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$message</var></dt>
+					<dd></dd>
+					<dt><var>$code</var></dt>
+					<dd></dd>
+					<dt><var>$previous</var></dt>
+					<dd></dd>
+					<dt><var>$output</var></dt>
+					<dd></dd>
+					<dt><var>$send_alert</var></dt>
+					<dd>if is true the exception will be write on the $output</dd>
+				</dl></div>
+
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code>Exception::__construct()</code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getGravity" id="_getGravity">
+
+		<td class="attributes"><code>
+			 public 
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getGravity">#</a>
+		<code><a href="source-class-Mothership.Exception.ExceptionAbstract.html#67-74" title="Go to source code">getGravity</a>( )</code>
+
+		<div class="description short">
+			<p>Get the gravity of the exception</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Get the gravity of the exception</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getGravityLevel" id="_getGravityLevel">
+
+		<td class="attributes"><code>
+			 protected 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getGravityLevel">#</a>
+		<code><a href="source-class-Mothership.Exception.ExceptionAbstract.html#76-92" title="Go to source code">getGravityLevel</a>( )</code>
+
+		<div class="description short">
+			<p>Get the gravity level of the exception</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Get the gravity level of the exception</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="alert" id="_alert">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_alert">#</a>
+		<code><a href="source-class-Mothership.Exception.ExceptionAbstract.html#94-112" title="Go to source code">alert</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from Exception</caption>
+	<tr>
+		<td><code>
+__toString(), 
+__wakeup(), 
+getCode(), 
+getFile(), 
+getLine(), 
+getMessage(), 
+getPrevious(), 
+getTrace(), 
+getTraceAsString()
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="gravity" id="$gravity">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Mothership.Exception.ExceptionAbstract.html#37" title="Go to source code"><var>$gravity</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$gravity" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="output" id="$output">
+		<td class="attributes"><code>
+			protected  
+			
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Mothership.Exception.ExceptionAbstract.html#38" title="Go to source code"><var>$output</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$output" class="anchor">#</a>
+				<code></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Properties inherited from Exception</caption>
+	<tr>
+		<td><code>
+<var>$code</var>, 
+<var>$file</var>, 
+<var>$line</var>, 
+<var>$message</var>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
