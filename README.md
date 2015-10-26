@@ -49,8 +49,7 @@ All the states and the transiction from one state to another:
 **transition_to**: the state in which the machine will arrive after the execution of the state (Usually is the same state)
 
 ###Use conditional transitions
-To use a condition inside a transiction add inside the *yml* configuration something like the [*ifConditions* 
-machine].(https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml)
+To use a condition inside a transiction add inside the *yml* configuration something like the [*ifConditions* machine.](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml)
 
 ```
 transitions_from:
