@@ -49,8 +49,8 @@ All the states and the transiction from one state to another:
 **transition_to**: the state in which the machine will arrive after the execution of the state (Usually is the same state)
 
 ###Use conditional transitions
-To use a condition inside a transiction add inside the *yml* configuration something like the (*ifConditions* 
-machine.)[https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml]
+To use a condition inside a transiction add inside the *yml* configuration something like the [*ifConditions* 
+machine].(https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml)
 
 ```
 transitions_from:
@@ -130,46 +130,6 @@ sudo apt-get install graphviz
 - Run test from root directory:
 ```
 phpunit --coverage-text
-```
-- Results of the last master unit tests:
-```
-Code Coverage Report:      
-
-  2015-10-26 14:57:04      
-
-                           
-
- Summary:                  
-
-  Classes: 50.00% (6/12)   
-
-  Methods: 32.61% (15/46)  
-
-  Lines:   60.44% (165/273)
-
-\Exemple\Simple::SimpleWorkflow
-
-  Methods:  75.00% ( 3/ 4)   Lines:  75.00% (  3/  4)
-
-\Mothership\Exception::ExceptionAbstract
-
-  Methods:   0.00% ( 0/ 4)   Lines:  45.71% ( 16/ 35)
-
-\Mothership\StateMachine::StateMachineAbstract
-
-  Methods:   0.00% ( 0/ 5)   Lines:  75.41% ( 46/ 61)
-
-\Mothership\StateMachine::Status
-
-  Methods:  38.46% ( 5/13)   Lines:  42.03% ( 29/ 69)
-
-\Mothership\StateMachine::Transition
-
-  Methods:  55.56% ( 5/ 9)   Lines:  68.00% ( 17/ 25)
-
-\Mothership\StateMachine::WorkflowAbstract
-
-  Methods:  18.18% ( 2/11)   Lines:  68.35% ( 54/ 79)
 ```
 
 #Notes
