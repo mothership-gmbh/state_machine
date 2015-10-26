@@ -16,10 +16,12 @@
     "phpunit/phpunit": "5.0"
   },
   "autoload": {
-    "classmap": [
-      "src/",
-      "exemple/",
-      "tests"
+    "psr-4": {
+      "": "src/",
+      "Exemple\\": "exemple/"
+    },
+    "files": [
+      "tests/StateMachine/MothershipBaseTestCase.php"
     ]
   }
 }

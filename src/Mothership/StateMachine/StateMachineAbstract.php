@@ -170,7 +170,6 @@ abstract class StateMachineAbstract implements StateMachineInterface
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Error running State Machine", 100, $ex, $this->output);
         }
-
     }
 
 }

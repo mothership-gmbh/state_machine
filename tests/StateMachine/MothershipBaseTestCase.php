@@ -26,8 +26,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
-
-
 class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
 {
     protected $exempleDir = '/exemple';
@@ -63,6 +61,19 @@ class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $object
+     * @param $propertyName
+     * @return string
+     */
+    protected function getPropertyClass(&$object, $propertyName)
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+        return get_class($property->getValue($object));
+    }
+
+    /**
      * Return all the directories containing exemples
      * @return array
      */
@@ -72,7 +83,7 @@ class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
         $dir = [];
         foreach ($objects as $object) {
             if ($object != '.' && $object != '..' && is_dir(getcwd() . '/' . $this->exempleDir . '/' . $object)) {
-                array_push($dir, ['PATH' => getcwd() . '/' . $this->exempleDir . '/' . $object.'/', 'NAME' => $object]);
+                array_push($dir, ['PATH' => getcwd() . '/' . $this->exempleDir . '/' . $object . '/', 'NAME' => $object]);
             }
         }
         return $dir;
