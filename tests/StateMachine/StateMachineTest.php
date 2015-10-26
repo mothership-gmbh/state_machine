@@ -43,11 +43,7 @@ class StateMachineTest extends MothershipBaseTestCase
     {
         $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $this->isInstanceOf($class, $state_machine);
-        try{
-            $this->assertTrue($state_machine->run());
-        }catch (\Mothership\Exception\StateMachine\StateMachineException $ex)   {
-
-        }
+        $this->assertTrue($state_machine->run());
     }
 
     /**
@@ -93,6 +89,21 @@ class StateMachineTest extends MothershipBaseTestCase
                 $this->assertArrayHasKey('transitions_to', $state);
             }
         }
+
+        return ['statemachine' => $state_machine, 'yaml_array' => $yaml_array];
     }
+
+    /**
+     * @dataProvider stateMachineProvider
+     */
+    public function testInitWorkflow($dir, $class, $yml)
+    {
+        $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $yaml_array = $this->invokeMethod($state_machine, 'parseYAML');
+        $this->invokeMethod($state_machine, "initWorkflow");
+        $this->assertEquals($yaml_array['class']['name'], $this->getPropertyClass($state_machine,
+            "workflow"));
+    }
+
 }
 

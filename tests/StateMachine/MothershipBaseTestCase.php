@@ -63,6 +63,19 @@ class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $object
+     * @param $propertyName
+     * @return string
+     */
+    protected function getPropertyClass(&$object, $propertyName)
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+        return get_class($property->getValue($object));
+    }
+
+    /**
      * Return all the directories containing exemples
      * @return array
      */
