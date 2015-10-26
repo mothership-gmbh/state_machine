@@ -2,6 +2,8 @@ Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.
 -----------------------------------------
 State Machine pattern
 
+For more informations visit the [website](http://mothership-gmbh.github.io/state_machine)
+
 #Features
 - Create, configure and run a complete State Machine.
 - Configuration of each state of the machine can be set completely up from a *yml* file.
@@ -133,3 +135,4 @@ phpunit --coverage-text
 
 #Notes
 - **Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite) presents in this extension
+- [dev-master api](http://mothership-gmbh.github.io/state_machine/api/dev-master/)
