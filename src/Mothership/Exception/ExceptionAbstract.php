@@ -29,6 +29,7 @@
 namespace Mothership\Exception;
 
 use Exception;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class ExceptionAbstract extends Exception
@@ -51,8 +52,13 @@ abstract class ExceptionAbstract extends Exception
             $this->message .= "\n" . $previous->getMessage();
         }
 
-        $this->gravity = $this->code;
         $this->output = $output;
+        if (is_null($output) || !isset($output)) {
+            $this->output = new ConsoleOutput();
+        }
+
+        $this->gravity = $this->code;
+
         if ($send_alert && $previous == null) {
             $this->alert();
         }

@@ -159,8 +159,7 @@ class Status implements StatusInterface
                 }
             }
         }
-        throw new StatusException("STATUS: [" . $transition_name . "] cant't run from [" . $current_status->getName()
-            . "]", 30,
+        throw new StatusException("STATUS: [" . $transition_name . "] can't run from [" . $current_status->getName(). "]", 30,
             null,
             $this->getWorkflow()->getOutput());
     }

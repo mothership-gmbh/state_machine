@@ -32,13 +32,14 @@ use Mothership\Exception\StateMachine\StatusException;
 use Mothership\Exception\StateMachine\TransictionException;
 use Mothership\Exception\StateMachine\WorkflowException;
 use Mothership\StateMachine\WorkflowInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use \Symfony\Component\Console\Output\OutputInterface;
 use Mothership\StateMachine\StatusInterface;
 
 abstract class WorkflowAbstract implements WorkflowInterface
 {
 
-    protected $_outpout;
+    protected $outpout;
     /**
      * Usefull variables for the object passed throw workflow configuration file
      * @var array
@@ -55,11 +56,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     public function __construct(OutputInterface $output, array $args = [])
     {
+        $this->output = new ConsoleOutput();
         foreach ($args as $key => $value) {
             $this->vars[$key] = $value;
         }
 
-        $this->output = $output;
         $this->_init();
     }
 
@@ -69,7 +70,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     public function getOutput()
     {
-        return $this->_outpout;
+        return $this->outpout;
     }
 
     /**
@@ -109,7 +110,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return $status;
             }
         }
-        throw new WorkflowException("No initial state found for the workflow", 90, null, $this->_outpout);
+        throw new WorkflowException("No initial state found for the workflow", 90, null, $this->outpout);
     }
 
     /**
@@ -124,11 +125,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
             return $status->execute($transiction_name, $this->current_status);
         } catch (StatusException $ex) {
             if ($ex->getGravity() > 50) {
-                throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->_outpout);
+                throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->outpout);
             }
             return false;
         } catch (TransitionException $ex) {
-            throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->_outpout);
+            throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->outpout);
         }
     }
 
@@ -164,7 +165,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return $status;
             }
         }
-        throw new WorkflowException("No status found with the name " . $name, 70, null, $this->_outpout);
+        throw new WorkflowException("No status found with the name " . $name, 70, null, $this->outpout);
     }
 
     /**
@@ -187,9 +188,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
                         }
                     }
                 } catch (TransitionException $ex) {
-
+                    new WorkflowException("Error during workflow->run()",100,$ex,$this->output);
                 } catch (WorkflowException $ex) {
-
+                    new WorkflowException("Error during workflow->run()",100,$ex,$this->output);
                 } catch (StateException $ex) {
                     if ($this->current_status->hasInternalState()) {
                         $i = 1;

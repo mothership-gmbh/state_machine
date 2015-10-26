@@ -8,7 +8,7 @@ State Machine pattern
 - Possibility to run State machine with only one command that visits all the possible nodes
 - Possibility to render an graphic image that show the behaviour of the state machine
     
-  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/Simple/workflow.png)
+  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.png)
 
 #HOW
 In the folder *exemple* there are some exemple of how use this repo.
@@ -47,6 +47,15 @@ All the states and the transiction from one state to another:
 **transition_from**: the states from which the current state can start.
 
 **transition_to**: the state in which the machine will arrive after the execution of the state (Usually is the same state)
+
+###Use conditional transitions
+To use a condition inside a transiction add inside the *yml* configuration something like the (*ifConditions* 
+machine.)[https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml]
+
+```
+transitions_from:
+      - {status:  third_state, result:  1}
+```
 
 - Create your php class *Workfow* for the state machine (The same configured in the *yml* configuration file) that extends **Mothership\StateMachine\WorkflowAbstract**
 ```
