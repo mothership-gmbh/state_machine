@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         syntaxCheck="false"
+         stopOnError="true"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+        >
+    <testsuites>
+        <testsuite name="statemachine">
+            <directory>./tests/StateMachine/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <file>src/Mothership/StateMachine/StateMachineAbstract.php</file>
+            <file>src/Mothership/StateMachine/WorkflowAbstract.php</file>
+            <file>src/Mothership/Exception/ExceptionAbstract.php</file>
+        </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+            <directory suffix=".php">exemple</directory>
+        </whitelist>
+    </filter>
+</phpunit>

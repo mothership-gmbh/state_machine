@@ -1,0 +1,33 @@
+#class of the model
+class:
+  name: Exemple\IfConditions\IfConditionsWorkflow
+  args: []
+
+#definition of the states and transition...the order establishes the transition from one state to another
+#the name of each state is NOT case sensitive
+states:
+  start:
+    type: initial
+  second_state:
+    type: normal
+    transitions_from: [start]
+    transitions_to: [second_state]
+  third_state:
+    type: normal
+    transitions_from: [second_state, transition_state, second_transition_state]
+    transitions_to: [third_state]
+  transition_state:
+    type: normal
+    transitions_from:
+      - {status:  third_state, result:  1}
+    transitions_to: [transition_state]
+  second_transition_state:
+    type: normal
+    transitions_from:
+      - {status:  third_state, result:  false}
+    transitions_to: [second_transition_state]
+  finish:
+    type: final
+    transitions_from:
+      - {status:  third_state, result:  true}
+    transitions_to:  [finish]
