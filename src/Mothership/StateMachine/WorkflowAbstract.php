@@ -78,7 +78,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     protected function _init()
     {
-        if(!array_key_exists("states",$this->vars)) {
+        if (!array_key_exists("states", $this->vars)) {
             throw new WorkflowException("You must define some states:\n", 99, null, $this->output);
         }
 
@@ -188,9 +188,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
                         }
                     }
                 } catch (TransitionException $ex) {
-                    new WorkflowException("Error during workflow->run()",100,$ex,$this->output);
+                    new WorkflowException("Error during workflow->run()", 100, $ex, $this->output);
                 } catch (WorkflowException $ex) {
-                    new WorkflowException("Error during workflow->run()",100,$ex,$this->output);
+                    new WorkflowException("Error during workflow->run()", 100, $ex, $this->output);
                 } catch (StateException $ex) {
                     if ($this->current_status->hasInternalState()) {
                         $i = 1;

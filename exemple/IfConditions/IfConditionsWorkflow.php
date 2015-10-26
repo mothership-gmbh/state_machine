@@ -50,8 +50,8 @@ class IfConditionsWorkflow extends WorkflowAbstract
     {
         if ($this->index > $this->limit) {
             return 0;
-        }else{
-            return rand(1,2);
+        } else {
+            return rand(1, 2);
         }
     }
 

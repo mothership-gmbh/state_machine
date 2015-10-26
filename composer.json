@@ -18,9 +18,11 @@
   "autoload": {
     "psr-4": {
       "": "src/",
-      "Exemple\\":  "exemple/"
+      "Exemple\\": "exemple/"
     },
-    "files":  ["tests/StateMachine/MothershipBaseTestCase.php"]
+    "files": [
+      "tests/StateMachine/MothershipBaseTestCase.php"
+    ]
   }
 }
 

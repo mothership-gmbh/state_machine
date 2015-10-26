@@ -39,22 +39,23 @@ class WorkflowTest extends MothershipBaseTestCase
     public function testGoodWorkflow($worklowClass, $output, $arguments)
     {
         $workflow = new $worklowClass($output, $arguments);
-        $this->isInstanceOf($worklowClass,$workflow);
+        $this->isInstanceOf($worklowClass, $workflow);
         /**
          * get CurrentStatus
          */
         $status = $workflow->getCurrentStatus();
-        $this->isInstanceOf('Mothership\StateMachine\StatusInterface',$status);
+        $this->isInstanceOf('Mothership\StateMachine\StatusInterface', $status);
         /**
          * getStatus
          */
         $status = $workflow->getStatus('second_state');
-        $this->isInstanceOf('Mothership\StateMachine\StatusInterface',$status);
+        $this->isInstanceOf('Mothership\StateMachine\StatusInterface', $status);
         /**
          * run
          */
         $this->assertTrue($workflow->run());
     }
+
     /**
      * @dataProvider workflowFailProvider
      * @expectedException     Mothership\Exception\StateMachine\WorkflowException
@@ -70,9 +71,9 @@ class WorkflowTest extends MothershipBaseTestCase
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
             array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\".$dir['NAME']."Workflow",
+                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 new \Symfony\Component\Console\Output\ConsoleOutput(),
-                $this->parseYml($dir['PATH'].'Workflow.yml'),
+                $this->parseYml($dir['PATH'] . 'Workflow.yml'),
             ]);
         }
         return $workflow;
@@ -85,12 +86,12 @@ class WorkflowTest extends MothershipBaseTestCase
 
         foreach ($this->state_machine_dir as $dir) {
             array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\".$dir['NAME']."Workflow",
+                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 new \Symfony\Component\Console\Output\ConsoleOutput(),
                 []
             ]);
             array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\".$dir['NAME']."Workflow",
+                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 new \Symfony\Component\Console\Output\ConsoleOutput(),
                 ['arg1' => 1, 'args2' => 2]
             ]);
