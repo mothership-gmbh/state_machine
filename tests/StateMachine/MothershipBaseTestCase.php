@@ -29,6 +29,7 @@
 class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
 {
     protected $exempleDir = '/exemple';
+    protected $excludeDir = ['Fail'];
 
     /**
      * call private methods
@@ -83,11 +84,14 @@ class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
         $dir = [];
         foreach ($objects as $object) {
             if ($object != '.' && $object != '..' && is_dir(getcwd() . '/' . $this->exempleDir . '/' . $object)) {
-                array_push($dir, ['PATH' => getcwd() . '/' . $this->exempleDir . '/' . $object . '/', 'NAME' => $object]);
+                foreach($this->excludeDir as $exclude)  {
+                    if($exclude!=$object)   {
+                        array_push($dir, ['PATH' => getcwd() . '/' . $this->exempleDir . '/' . $object . '/', 'NAME' => $object]);
+                    }
+                }
             }
         }
         return $dir;
     }
-
 
 }

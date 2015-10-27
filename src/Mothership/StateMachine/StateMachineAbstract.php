@@ -28,39 +28,32 @@
 
 namespace Mothership\StateMachine;
 
-use Mothership\Exception\StateMachine\StateMachineException;
-use Mothership\Exception\StateMachine\WorkflowException;
+use Mothership\StateMachine\Exception\StateMachineException;
+use Mothership\StateMachine\Exception\WorkflowException;
 use Symfony\Component\Yaml\Yaml;
-use \Symfony\Component\Console\Output\OutputInterface;
-use Mothership\StateMachine\Transition;
 
 abstract class StateMachineAbstract implements StateMachineInterface
 {
     protected $workflow_file;
     protected $workflow_array;
     protected $workflow;
-    protected $output;
 
-    public function __construct($file = null, OutputInterface $output)
+    public function __construct($file = null)
     {
-        $this->output = $output;
         $this->workflow_file = $file;
         if (!file_exists($this->workflow_file) || is_null($file)) {
             throw new StateMachineException("File " . $this->workflow_file . "  doesn't exist or null, you
             must provide an existing workflow YAML file",
-                100, null, $this->output);
-        }
-        if ($output === null) {
-            throw new StateMachineException("No Output is defined for Mothership State Machine", 99, null, $this->output);
+                100, null);
         }
         //read the file
         try {
             $this->workflow_array = $this->parseYAML();
             if ($this->workflow_array === false || $this->workflow_array === null) {
-                throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, null, $this->output);
+                throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, null);
             }
         } catch (Symfony\Component\Yaml\Exception\ParseException $ex) {
-            throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, $ex, $this->output);
+            throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, $ex);
         }
 
         $this->initWorkflow();
@@ -91,6 +84,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
                     $yaml_fixed['states'][] = $state;
                 }
             }
+
             return $yaml_fixed;
         } catch (Symfony\Component\Yaml\Exception\ParseException $ex) {
             throw $ex;
@@ -104,9 +98,9 @@ abstract class StateMachineAbstract implements StateMachineInterface
     {
         try {
             $class_name = $this->workflow_array['class']['name'];
-            $this->workflow = new $class_name($this->output, $this->workflow_array);
+            $this->workflow = new $class_name($this->workflow_array);
         } catch (WorkflowException $ex) {
-            throw new StateMachineException("Workflow with some problems", 90, $ex, $this->output);
+            throw new StateMachineException("Workflow with some problems", 90, $ex);
         }
 
     }
@@ -145,7 +139,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
                 foreach ($transitions_from as $from) {
                     if (is_array($from)) {
                         $_transitions[] = sprintf($pattern, $from['status'], $state['name'], "<< IF "
-                            . $from['result'] . " >>" . $state['name']);
+                            . $this->convertToStringCondition($from['result']) . " >>" . $state['name']);
                     } else {
                         $_transitions[] = sprintf($pattern, $from, $state['name'], $state['name']);
                     }
@@ -168,8 +162,24 @@ abstract class StateMachineAbstract implements StateMachineInterface
         try {
             return $this->workflow->run();
         } catch (WorkflowException $ex) {
-            throw new StateMachineException("Error running State Machine", 100, $ex, $this->output);
+            throw new StateMachineException("Error running State Machine", 100, $ex);
         }
+    }
+
+    /**
+     * Convert the Condition to string
+     * @param $condition
+     * @return string
+     */
+    private function convertToStringCondition($condition)   {
+        if(is_bool($condition)){
+            if($condition){
+                return "TRUE";
+            }else{
+                return "FALSE";
+            }
+        }
+        return (string)$condition;
     }
 
 }

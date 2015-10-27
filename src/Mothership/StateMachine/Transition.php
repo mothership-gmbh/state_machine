@@ -29,8 +29,8 @@
 namespace Mothership\StateMachine;
 
 
-use Mothership\Exception\StateMachine\StatusException;
-use Mothership\Exception\StateMachine\TransitionException;
+use Mothership\StateMachine\Exception\StatusException;
+use Mothership\StateMachine\Exception\TransitionException;
 use Mothership\Exception\WorkflowException;
 use Mothership\StateMachine\StateMachine;
 use Mothership\StateMachine\TransitionInterface;
@@ -82,8 +82,7 @@ class Transition implements TransitionInterface
             $this->getStatus()->setInternalStatus($result);
             return $this->getStatus();
         } catch (WorkflowException $ex) {
-            throw new TransitionException("error processing transiction " . $this->getName(), 100, $ex,
-                $this->getStatus()->getWorkflow()->getOutput());
+            throw new TransitionException("error processing transiction " . $this->getName(), 100, $ex);
         }
     }
 

@@ -17,7 +17,7 @@
   },
   "autoload": {
     "psr-4": {
-      "": "src/",
+      "Mothership\\StateMachine\\": "src/Mothership/StateMachine/",
       "Exemple\\": "exemple/"
     },
     "files": [

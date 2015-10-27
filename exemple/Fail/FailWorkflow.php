@@ -27,22 +27,12 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\BooleanConditions;
+namespace Exemple\Fail;
 
 use Mothership\StateMachine\WorkflowAbstract;
 
-class BooleanConditionsWorkflow extends WorkflowAbstract
+class FailWorkflow extends WorkflowAbstract
 {
-    protected $index;
-    protected $limit;
-
-    public function __construct(array $array){
-        parent::__construct($array);
-        $args =  $this->vars['class']['args'];
-        $this->index = $args['startingIndex'];
-        $this->limit = $args['limit'];
-    }
-
     function start()
     {
 
@@ -51,29 +41,6 @@ class BooleanConditionsWorkflow extends WorkflowAbstract
     function second_state()
     {
 
-    }
-
-    function third_state()
-    {
-        if ($this->index > $this->limit) {
-            return true;
-        } else {
-            $value = rand(1, 2);
-            if($value==1)   {
-                return 1;
-            }
-            return false;
-        }
-    }
-
-    function transition_state()
-    {
-        $this->index++;
-    }
-
-    function second_transition_state()
-    {
-        $this->index++;
     }
 
     function finish()

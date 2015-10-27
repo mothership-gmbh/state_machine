@@ -1,6 +1,6 @@
 Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
 -----------------------------------------
-State Machine pattern
+A PHP based state machine implementation.
 
 For more informations visit the [website](http://mothership-gmbh.github.io/state_machine)
 
@@ -10,7 +10,7 @@ For more informations visit the [website](http://mothership-gmbh.github.io/state
 - Possibility to run State machine with only one command that visits all the possible nodes
 - Possibility to render an graphic image that show the behaviour of the state machine
     
-  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.png)
+  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/BooleanConditions/workflow.png)
 
 #HOW
 In the folder *exemple* there are some exemple of how use this repo.
@@ -28,7 +28,19 @@ class:
 
 *args*: array of arguments for the constructor class of the state machine
 
+A simple implementation of how get your args in your workflow class could be like in *BooleanConditionsWorkflow*:
 ```
+ public function __construct(array $array){
+        parent::__construct($array);
+        $args =  $this->vars['class']['args'];
+        $this->index = $args['startingIndex'];
+        $this->limit = $args['limit'];
+    }
+```
+
+###States of the state machine/workflow
+
+``` 
 states:
   start:
     type: initial
@@ -50,7 +62,7 @@ All the states and the transiction from one state to another:
 
 **transition_to**: the state in which the machine will arrive after the execution of the state (Usually is the same state)
 
-###Use conditional transitions
+####Use conditional transitions
 To use a condition inside a transiction add inside the *yml* configuration something like the [*ifConditions* machine.](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml)
 
 ```
@@ -132,6 +144,8 @@ sudo apt-get install graphviz
 ```
 phpunit --coverage-text
 ```
+- You can add your State machine adding it in the *exemple* folder and it will be automatically tested with the 
+command about. **Just use the same conventions name space**
 
 #Notes
 - **Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite) presents in this extension

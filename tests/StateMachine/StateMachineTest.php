@@ -35,14 +35,14 @@ class StateMachineTest extends MothershipBaseTestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];
-
+    protected $statemachine_test;
 
     /**
      * @dataProvider stateMachineProvider
      */
     public function testCreation($dir, $class, $yml)
     {
-        $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $state_machine = new $class($yml);
         $this->isInstanceOf($class, $state_machine);
         $this->assertTrue($state_machine->run());
     }
@@ -53,7 +53,7 @@ class StateMachineTest extends MothershipBaseTestCase
     public function testRenderGraph($dir, $class, $yml)
     {
         $path = $dir . 'workflow.png';
-        $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $state_machine = new $class($yml);
         $state_machine->renderGraph($path, false);
         $this->assertTrue(file_exists($path));
     }
@@ -79,9 +79,11 @@ class StateMachineTest extends MothershipBaseTestCase
      */
     public function testParseYAML($dir, $class, $yml)
     {
-        $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $state_machine = new $class($yml);
         $yaml_array = $this->invokeMethod($state_machine, 'parseYAML');
         $this->assertArrayHasKey('states', $yaml_array);
+        $this->assertArrayHasKey('class', $yaml_array);
+        $this->assertArrayHasKey('args', $yaml_array['class']);
         foreach ($yaml_array['states'] as $state) {
             $this->assertArrayHasKey('name', $state);
             $this->assertArrayHasKey('type', $state);
@@ -90,8 +92,14 @@ class StateMachineTest extends MothershipBaseTestCase
                 $this->assertArrayHasKey('transitions_to', $state);
             }
         }
+    }
 
-        return ['statemachine' => $state_machine, 'yaml_array' => $yaml_array];
+    /**
+     * @expectedException     Mothership\StateMachine\Exception\StateMachineException
+     */
+    public function testMethodNotImplementedException() {
+        $state_machine_class = "Exemple\\Fail\\FailStateMachine";
+        $state_machine = new $state_machine_class(getcwd() . '/exemple/Fail/Workflow.yml');
     }
 
     /**

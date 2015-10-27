@@ -26,7 +26,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Exception;
+namespace Mothership\StateMachine\Exception;
 
 use Exception;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -41,13 +41,15 @@ abstract class ExceptionAbstract extends Exception
      * @param string $message
      * @param int $code
      * @param Exception|null $previous
-     * @param OutputInterface|null $output
+     * @param OutputInterface|null $output if null a default Symfony\Component\Console\Output\ConsoleOutput will be
+     * create
      * @param bool|true $send_alert if is true the exception will be write on the $output
      */
     public function __construct($message = "", $code = 0, Exception $previous = null, OutputInterface $output = null,
                                 $send_alert = true)
     {
         parent::__construct($message, $code, $previous);
+
         if ($previous != null) {
             $this->message .= "\n" . $previous->getMessage();
         }
