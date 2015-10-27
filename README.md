@@ -1,6 +1,6 @@
 Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
 -----------------------------------------
-State Machine pattern
+A PHP based state machine implementation.
 
 #Features
 - Create, configure and run a complete State Machine.
@@ -8,7 +8,7 @@ State Machine pattern
 - Possibility to run State machine with only one command that visits all the possible nodes
 - Possibility to render an graphic image that show the behaviour of the state machine
     
-  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.png)
+  ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/BooleanConditions/workflow.png)
 
 #HOW
 In the folder *exemple* there are some exemple of how use this repo.
@@ -26,7 +26,7 @@ class:
 
 *args*: array of arguments for the constructor class of the state machine
 
-```
+```git 
 states:
   start:
     type: initial
