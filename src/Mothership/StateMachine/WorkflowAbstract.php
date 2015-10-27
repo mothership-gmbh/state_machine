@@ -81,12 +81,17 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
         //check if all the methods for each status is callable
         $methods_not_implemented = "";
-        foreach ($this->vars['states'] as $status) {
-            array_push($this->states, new Status($this, $status));
-            if (!method_exists($this, $status['name'])) {
-                $methods_not_implemented .= $status['name'] . "\n";
+        try{
+            foreach ($this->vars['states'] as $status) {
+                array_push($this->states, new Status($this, $status));
+                if (!method_exists($this, $status['name'])) {
+                    $methods_not_implemented .= $status['name'] . "\n";
+                }
             }
+        }catch (StatusException $ex)    {
+            throw new WorkflowException("Error in one state of the workflow:\n" .$ex->getMessage(), 79);
         }
+
         if (strlen($methods_not_implemented) > 0) {
             throw new WorkflowException("This methods are not implemented in the workflow:\n" .
                 $methods_not_implemented, 79, null);
