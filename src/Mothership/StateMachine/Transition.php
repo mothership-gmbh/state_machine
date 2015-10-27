@@ -29,8 +29,8 @@
 namespace Mothership\StateMachine;
 
 
-use Mothership\Exception\StateMachine\StatusException;
-use Mothership\Exception\StateMachine\TransitionException;
+use Mothership\StateMachine\Exception\StatusException;
+use Mothership\StateMachine\Exception\TransitionException;
 use Mothership\Exception\WorkflowException;
 use Mothership\StateMachine\StateMachine;
 use Mothership\StateMachine\TransitionInterface;

@@ -30,6 +30,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use Exemple\Simple\SimpleWorkflow;
 use Exemple\IfConditions\IfConditionsWorkflow;
+use Exemple\Fail\FailStateMachine;
+use Exemple\Fail\FailWorkflow;
 
 class WorkflowTest extends MothershipBaseTestCase
 {
@@ -56,49 +58,70 @@ class WorkflowTest extends MothershipBaseTestCase
         $this->assertTrue($workflow->run());
     }
 
+
     /**
      * @dataProvider workflowFailProvider
-     * @expectedException     Mothership\Exception\StateMachine\WorkflowException
+     * @expectedException     Mothership\StateMachine\Exception\WorkflowException
      */
     public function testExceptionInConstructor($worklowClass, $arguments)
     {
         $workflow = new $worklowClass($arguments);
     }
 
+    /**
+     * Good provider for instantiate a workflow
+     * @return array
+     */
     public function workflowGoodProvider()
     {
         $this->state_machine_dir = $this->getExemplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
-            $state_machine_class = "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] ."StateMachine";
+            $state_machine_class = "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
             $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
             array_push($workflow, [
                 "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                $this->invokeMethod($state_machine,"parseYAML"),
+                $this->invokeMethod($state_machine, "parseYAML"),
             ]);
         }
         return $workflow;
     }
 
+    /**
+     * Bad provider for instantiate a workflow
+     * @return array
+     */
     public function workflowFailProvider()
     {
-        $this->state_machine_dir = $this->getExemplesDir();
         $workflow = [];
+        array_push($workflow, [
+            "Exemple\\Simple\\SimpleWorkflow",
+            []
+        ]);
+        array_push($workflow, [
+            "Exemple\\Simple\\SimpleWorkflow",
+            ['arg1' => 1, 'args2' => 2]
+        ]);
 
-        foreach ($this->state_machine_dir as $dir) {
-            array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                []
-            ]);
-            array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                ['arg1' => 1, 'args2' => 2]
-            ]);
-        }
+
         return $workflow;
     }
 
-
+    /**
+     * @expectedException     Mothership\StateMachine\Exception\WorkflowException
+     */
+    public function testMethodNotImplementedException()
+    {
+        $workflow_class = "Exemple\\Fail\\FailWorkflow";
+        $workflow = new $workflow_class([
+            'states' => [
+                'start' => [],
+                'second_state' => [],
+                'third' => [],
+                'final' => []
+            ]
+        ]);
+    }
 
     /**
      * @dataProvider    workflowGoodProvider
@@ -106,10 +129,9 @@ class WorkflowTest extends MothershipBaseTestCase
     public function testVars($worklowClass, $arguments)
     {
         $workflow = new $worklowClass($arguments);
-        $vars = $this->getPropertyValue($workflow,"vars");
+        $vars = $this->getPropertyValue($workflow, "vars");
         $this->assertArrayHasKey('states', $vars);
         $this->assertArrayHasKey('class', $vars);
         $this->assertArrayHasKey('args', $vars['class']);
-
     }
 }

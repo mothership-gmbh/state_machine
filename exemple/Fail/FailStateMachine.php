@@ -19,19 +19,18 @@
  * needs please refer to http://www.magentocommerce.com for more information.
  *
  * @category  Mothership
- * @package   Mothership_Exception
+ * @package   Mothership_{EXTENSION NAME}
  * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @copyright Copyright (c) 2015 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Exception\StateMachine;
+namespace Exemple\Fail;
 
-use Mothership\Exception\ExceptionAbstract;
+use Mothership\StateMachine\StateMachineAbstract;
 
-class StateMachineException extends ExceptionAbstract
+class FailStateMachine extends StateMachineAbstract
 {
 
 }
-

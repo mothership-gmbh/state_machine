@@ -28,11 +28,9 @@
 
 namespace Mothership\StateMachine;
 
-use Mothership\Exception\StateMachine\StateMachineException;
-use Mothership\Exception\StateMachine\WorkflowException;
+use Mothership\StateMachine\Exception\StateMachineException;
+use Mothership\StateMachine\Exception\WorkflowException;
 use Symfony\Component\Yaml\Yaml;
-use \Symfony\Component\Console\Output\OutputInterface;
-use Mothership\StateMachine\Transition;
 
 abstract class StateMachineAbstract implements StateMachineInterface
 {

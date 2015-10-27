@@ -95,6 +95,14 @@ class StateMachineTest extends MothershipBaseTestCase
     }
 
     /**
+     * @expectedException     Mothership\StateMachine\Exception\StateMachineException
+     */
+    public function testMethodNotImplementedException() {
+        $state_machine_class = "Exemple\\Fail\\FailStateMachine";
+        $state_machine = new $state_machine_class(getcwd() . '/exemple/Fail/Workflow.yml');
+    }
+
+    /**
      * @dataProvider stateMachineProvider
      */
     public function testInitWorkflow($dir, $class, $yml)

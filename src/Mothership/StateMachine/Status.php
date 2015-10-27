@@ -30,7 +30,7 @@ namespace Mothership\StateMachine;
 
 
 use Mothership\StateMachine\StatusInterface;
-use Mothership\Exception\StateMachine\StatusException;
+use Mothership\StateMachine\Exception\StatusException;
 use Mothership\StateMachine\TransitionInterface;
 use Mothership\StateMachine\WorkflowInterface;
 use Mothership\StateMachine\Transition;

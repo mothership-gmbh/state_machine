@@ -26,7 +26,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Exception;
+namespace Mothership\StateMachine\Exception;
 
 use Exception;
 use Symfony\Component\Console\Output\ConsoleOutput;
