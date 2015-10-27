@@ -145,7 +145,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
                 foreach ($transitions_from as $from) {
                     if (is_array($from)) {
                         $_transitions[] = sprintf($pattern, $from['status'], $state['name'], "<< IF "
-                            . $from['result'] . " >>" . $state['name']);
+                            . $this->convertToStringCondition($from['result']) . " >>" . $state['name']);
                     } else {
                         $_transitions[] = sprintf($pattern, $from, $state['name'], $state['name']);
                     }
@@ -170,6 +170,22 @@ abstract class StateMachineAbstract implements StateMachineInterface
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Error running State Machine", 100, $ex, $this->output);
         }
+    }
+
+    /**
+     * Convert the Condition to string
+     * @param $condition
+     * @return string
+     */
+    private function convertToStringCondition($condition)   {
+        if(is_bool($condition)){
+            if($condition){
+                return "TRUE";
+            }else{
+                return "FALSE";
+            }
+        }
+        return (string)$condition;
     }
 
 }
