@@ -28,9 +28,9 @@
 
 namespace Mothership\StateMachine;
 
-use Mothership\Exception\StateMachine\StatusException;
-use Mothership\Exception\StateMachine\TransictionException;
-use Mothership\Exception\StateMachine\WorkflowException;
+use Mothership\StateMachine\Exception\StatusException;
+use Mothership\StateMachine\Exception\TransictionException;
+use Mothership\StateMachine\Exception\WorkflowException;
 use Mothership\StateMachine\WorkflowInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use \Symfony\Component\Console\Output\OutputInterface;

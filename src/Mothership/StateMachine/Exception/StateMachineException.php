@@ -26,9 +26,9 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Exception\StateMachine;
+namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
+use Mothership\StateMachine\Exception\ExceptionAbstract;
 
 class StateMachineException extends ExceptionAbstract
 {
