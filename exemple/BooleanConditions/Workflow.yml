@@ -1,7 +1,9 @@
 #class of the model
 class:
   name: Exemple\IfConditions\IfConditionsWorkflow
-  args: []
+  args:
+    startingIndex: 0
+    limit: 20
 
 #definition of the states and transition...the order establishes the transition from one state to another
 #the name of each state is NOT case sensitive

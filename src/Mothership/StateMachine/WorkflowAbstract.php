@@ -38,8 +38,6 @@ use Mothership\StateMachine\StatusInterface;
 
 abstract class WorkflowAbstract implements WorkflowInterface
 {
-
-    protected $outpout;
     /**
      * Usefull variables for the object passed throw workflow configuration file
      * @var array
@@ -54,9 +52,8 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     protected $current_status;
 
-    public function __construct(OutputInterface $output, array $args = [])
+    public function __construct(array $args = [])
     {
-        $this->output = new ConsoleOutput();
         foreach ($args as $key => $value) {
             $this->vars[$key] = $value;
         }
@@ -79,7 +76,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
     protected function _init()
     {
         if (!array_key_exists("states", $this->vars)) {
-            throw new WorkflowException("You must define some states:\n", 99, null, $this->output);
+            throw new WorkflowException("You must define some states:\n", 99, null);
         }
 
         //check if all the methods for each status is callable
@@ -92,7 +89,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
         }
         if (strlen($methods_not_implemented) > 0) {
             throw new WorkflowException("This methods are not implemented in the workflow:\n" .
-                $methods_not_implemented, 79, null, $this->output);
+                $methods_not_implemented, 79, null);
         }
 
         $this->setInitialState();
@@ -110,7 +107,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return $status;
             }
         }
-        throw new WorkflowException("No initial state found for the workflow", 90, null, $this->outpout);
+        throw new WorkflowException("No initial state found for the workflow", 90, null);
     }
 
     /**
@@ -125,11 +122,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
             return $status->execute($transiction_name, $this->current_status);
         } catch (StatusException $ex) {
             if ($ex->getGravity() > 50) {
-                throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->outpout);
+                throw new WorkflowException("Error executing the transition", 100, $ex, null);
             }
             return false;
         } catch (TransitionException $ex) {
-            throw new WorkflowException("Error executing the transition", 100, $ex, null, $this->outpout);
+            throw new WorkflowException("Error executing the transition", 100, $ex, null);
         }
     }
 
@@ -165,7 +162,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return $status;
             }
         }
-        throw new WorkflowException("No status found with the name " . $name, 70, null, $this->outpout);
+        throw new WorkflowException("No status found with the name " . $name, 70, null);
     }
 
     /**

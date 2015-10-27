@@ -63,8 +63,7 @@ class Status implements StatusInterface
     public function getName()
     {
         if (!$this->has('name')) {
-            throw new StatusException("Status without a name", 100, null,
-                $this->getWorkflow()->getOutput());
+            throw new StatusException("Status without a name", 100, null);
         }
         return $this->properties['name'];
     }
@@ -76,12 +75,10 @@ class Status implements StatusInterface
     public function getType()
     {
         if (!$this->has('type')) {
-            throw new StatusException("Status without a type", 100, null,
-                $this->getWorkflow()->getOutput());
+            throw new StatusException("Status without a type", 100, null);
         }
         if (!in_array($this->properties['type'], $this->types)) {
-            throw new StatusException("The type specified is invalid", 100, null,
-                $this->getWorkflow()->getOutput());
+            throw new StatusException("The type specified is invalid", 100, null);
         }
         return $this->properties['type'];
     }
@@ -105,12 +102,10 @@ class Status implements StatusInterface
     {
         if (count($this->transitions) == 0 && !$this->isInitialType()) {
             if (!$this->has('transitions_to')) {
-                throw new StatusException("Status " . $this->getName() . " without transitions_to property", 80, null,
-                    $this->getWorkflow()->getOutput());
+                throw new StatusException("Status " . $this->getName() . " without transitions_to property", 80, null);
             }
             if (!$this->has('transitions_from')) {
-                throw new StatusException("Status " . $this->getName() . " without transitions_from property", 81, null,
-                    $this->getWorkflow()->getOutput());
+                throw new StatusException("Status " . $this->getName() . " without transitions_from property", 81, null);
             }
 
             foreach ($this->properties['transitions_from'] as $transition) {
@@ -119,8 +114,7 @@ class Status implements StatusInterface
 
             if (count($this->transitions) == 0) {
                 throw new StatusException("Status " . $this->getName() . " has transition_from property not maching the name",
-                    85, null,
-                    $this->getWorkflow()->getOutput());
+                    85, null);
             }
         } else if ($this->isInitialType()) {
             $this->transitions = [];
@@ -150,8 +144,7 @@ class Status implements StatusInterface
                         . $this->workflow->getStatus($current_status->getName())->getInternalStatus() . ", Status
                         need: " . $t->getCondition() . " ]",
                         10,
-                        null,
-                        $this->getWorkflow()->getOutput());
+                        null);
                 }
             } else {
                 if ($t->getTransitionFrom() == $current_status->getName() && $t->getName() == $transition_name) {
@@ -160,8 +153,7 @@ class Status implements StatusInterface
             }
         }
         throw new StatusException("STATUS: [" . $transition_name . "] can't run from [" . $current_status->getName() . "]", 30,
-            null,
-            $this->getWorkflow()->getOutput());
+            null);
     }
 
     /**
@@ -182,8 +174,7 @@ class Status implements StatusInterface
     public function get($property)
     {
         if (!$this->has($property)) {
-            throw new StatusException("Status without a property: " . $property, 90, null,
-                $this->getWorkflow()->getOutput());
+            throw new StatusException("Status without a property: " . $property, 90, null);
         }
         return $this->properties[$property];
     }
