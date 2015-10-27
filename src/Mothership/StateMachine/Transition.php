@@ -82,8 +82,7 @@ class Transition implements TransitionInterface
             $this->getStatus()->setInternalStatus($result);
             return $this->getStatus();
         } catch (WorkflowException $ex) {
-            throw new TransitionException("error processing transiction " . $this->getName(), 100, $ex,
-                $this->getStatus()->getWorkflow()->getOutput());
+            throw new TransitionException("error processing transiction " . $this->getName(), 100, $ex);
         }
     }
 

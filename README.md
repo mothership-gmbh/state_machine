@@ -17,6 +17,8 @@ All exemple are tested and run: they are the base for all the unit test.
 
 ##Your State machine
 - create your *yml* configuration file where you define:
+
+###class and argument for the workflow
 ```
 class:
   name: Exemple\SimpleStateMachine\Workflow
@@ -26,7 +28,19 @@ class:
 
 *args*: array of arguments for the constructor class of the state machine
 
-```git 
+A simple implementation of how get your args in your workflow class could be like in *BooleanConditionsWorkflow*:
+```
+ public function __construct(array $array){
+        parent::__construct($array);
+        $args =  $this->vars['class']['args'];
+        $this->index = $args['startingIndex'];
+        $this->limit = $args['limit'];
+    }
+```
+
+###States of the state machine/workflow
+
+``` 
 states:
   start:
     type: initial
@@ -48,7 +62,7 @@ All the states and the transiction from one state to another:
 
 **transition_to**: the state in which the machine will arrive after the execution of the state (Usually is the same state)
 
-###Use conditional transitions
+####Use conditional transitions
 To use a condition inside a transiction add inside the *yml* configuration something like the [*ifConditions* machine.](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/IfConditions/workflow.yml)
 
 ```
@@ -130,6 +144,8 @@ sudo apt-get install graphviz
 ```
 phpunit --coverage-text
 ```
+- You can add your State machine adding it in the *exemple* folder and it will be automatically tested with the 
+command about. **Just use the same conventions name space**
 
 #Notes
 - **Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite) presents in this extension

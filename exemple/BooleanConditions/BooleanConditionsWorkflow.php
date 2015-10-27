@@ -33,8 +33,15 @@ use Mothership\StateMachine\WorkflowAbstract;
 
 class BooleanConditionsWorkflow extends WorkflowAbstract
 {
-    protected $index = 0;
-    protected $limit = 10;
+    protected $index;
+    protected $limit;
+
+    public function __construct(array $array){
+        parent::__construct($array);
+        $args =  $this->vars['class']['args'];
+        $this->index = $args['startingIndex'];
+        $this->limit = $args['limit'];
+    }
 
     function start()
     {

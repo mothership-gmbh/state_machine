@@ -36,9 +36,9 @@ class WorkflowTest extends MothershipBaseTestCase
     /**
      * @dataProvider    workflowGoodProvider
      */
-    public function testGoodWorkflow($worklowClass, $output, $arguments)
+    public function testGoodWorkflow($worklowClass, $arguments)
     {
-        $workflow = new $worklowClass($output, $arguments);
+        $workflow = new $worklowClass($arguments);
         $this->isInstanceOf($worklowClass, $workflow);
         /**
          * get CurrentStatus
@@ -60,9 +60,9 @@ class WorkflowTest extends MothershipBaseTestCase
      * @dataProvider workflowFailProvider
      * @expectedException     Mothership\Exception\StateMachine\WorkflowException
      */
-    public function testExceptionInConstructor($worklowClass, $output, $arguments)
+    public function testExceptionInConstructor($worklowClass, $arguments)
     {
-        $workflow = new $worklowClass($output, $arguments);
+        $workflow = new $worklowClass($arguments);
     }
 
     public function workflowGoodProvider()
@@ -70,10 +70,11 @@ class WorkflowTest extends MothershipBaseTestCase
         $this->state_machine_dir = $this->getExemplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
+            $state_machine_class = "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] ."StateMachine";
+            $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
             array_push($workflow, [
                 "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                new \Symfony\Component\Console\Output\ConsoleOutput(),
-                $this->parseYml($dir['PATH'] . 'Workflow.yml'),
+                $this->invokeMethod($state_machine,"parseYAML"),
             ]);
         }
         return $workflow;
@@ -87,12 +88,10 @@ class WorkflowTest extends MothershipBaseTestCase
         foreach ($this->state_machine_dir as $dir) {
             array_push($workflow, [
                 "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                new \Symfony\Component\Console\Output\ConsoleOutput(),
                 []
             ]);
             array_push($workflow, [
                 "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
-                new \Symfony\Component\Console\Output\ConsoleOutput(),
                 ['arg1' => 1, 'args2' => 2]
             ]);
         }
@@ -100,24 +99,17 @@ class WorkflowTest extends MothershipBaseTestCase
     }
 
 
-    private function parseYml($file)
-    {
-        $yml = Yaml::parse(file_get_contents($file));
-        $yml_fixed = [];
-        foreach ($yml['states'] as $key => $value) {
-            if ($value['type'] != 'initial') {
-                $state = ['name' => $key,
-                    'type' => $value['type'],
-                    'transitions_from' => $value['transitions_from'],
-                    'transitions_to' => $value['transitions_to']];
-                $yml_fixed['states'][] = $state;
-            } else {
-                $state = ['name' => $key,
-                    'type' => $value['type']];
-                $yml_fixed['states'][] = $state;
-            }
-        }
 
-        return $yml_fixed;
+    /**
+     * @dataProvider    workflowGoodProvider
+     */
+    public function testVars($worklowClass, $arguments)
+    {
+        $workflow = new $worklowClass($arguments);
+        $vars = $this->getPropertyValue($workflow,"vars");
+        $this->assertArrayHasKey('states', $vars);
+        $this->assertArrayHasKey('class', $vars);
+        $this->assertArrayHasKey('args', $vars['class']);
+
     }
 }
