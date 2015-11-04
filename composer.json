@@ -1,6 +1,8 @@
 {
   "name": "mothership/state_machine",
   "description": "php implementation of state machine, completely configured by an external .yml file with the render of a graph's description",
+  "homepage": "https://www.mothership.de",
+  "license": "MIT",
   "authors": [
     {
       "name": "Maurizio Brioschi",
