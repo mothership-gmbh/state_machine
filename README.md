@@ -12,6 +12,21 @@ For more informations visit the [website](http://mothership-gmbh.github.io/state
     
   ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/BooleanConditions/workflow.png)
 
+#Installation
+Using composer add for the last tagged version:
+```
+"require": {
+        "mothership/state_machine": "0.1"
+        }
+```
+or for the dev-master version:
+```
+"require": {
+        "mothership/state_machine": "dev-master"
+        }
+```
+Then just run *composer install*
+
 #HOW
 In the folder *exemple* there are some exemple of how use this repo.
 
