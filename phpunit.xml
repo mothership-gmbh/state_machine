@@ -20,13 +20,14 @@
     </testsuites>
     <filter>
         <blacklist>
-            <file>src/Mothership/StateMachine/StateMachineAbstract.php</file>
-            <file>src/Mothership/StateMachine/WorkflowAbstract.php</file>
-            <file>src/Mothership/Exception/ExceptionAbstract.php</file>
+            <file>src/Mothership/StateMachine/Exception/StateMachineException.php</file>
+            <file>src/Mothership/StateMachine/Exception/StatusException.php</file>
+            <file>src/Mothership/StateMachine/Exception/TransitionException.php</file>
+            <file>src/Mothership/StateMachine/Exception/WorkflowException.php</file>
         </blacklist>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-            <directory suffix=".php">exemple</directory>
+            <directory suffix=".php">src/Mothership/StateMachine</directory>
         </whitelist>
+
     </filter>
 </phpunit>
