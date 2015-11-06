@@ -33,7 +33,7 @@ use Exemple\IfConditions\IfConditionsWorkflow;
 use Exemple\Fail\FailStateMachine;
 use Exemple\Fail\FailWorkflow;
 
-class WorkflowTest extends MothershipBaseTestCase
+class WorkflowTest extends StateMachineTestCase
 {
     /**
      * @dataProvider    workflowGoodProvider

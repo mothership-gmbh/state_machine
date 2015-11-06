@@ -24,7 +24,7 @@
       "Exemple\\": "exemple/"
     },
     "files": [
-      "tests/StateMachine/MothershipBaseTestCase.php"
+      "tests/Mothership/StateMachine/StateMachineTestCase.php"
     ]
   }
 }
