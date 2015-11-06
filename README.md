@@ -27,7 +27,7 @@ or for the dev-master version:
 ```
 Then just run *composer install*
 
-**StateMachine render graph functionality needs *graphviz* library:**
+**StateMachine render graph functionality needs [*graphviz*](http://www.graphviz.org/) library:**
 ```
 sudo apt-get install graphviz
 ```
