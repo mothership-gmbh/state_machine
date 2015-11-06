@@ -28,9 +28,7 @@
 
 namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
-
-class StatusException extends ExceptionAbstract
+class StatusException extends StateMachineException
 {
 
 }

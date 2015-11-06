@@ -28,9 +28,7 @@
 
 namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
-
-class WorkflowException extends ExceptionAbstract
+class WorkflowException extends StateMachineException
 {
 
 }

@@ -38,6 +38,8 @@ abstract class StateMachineAbstract implements StateMachineInterface
     protected $workflow_array;
     protected $workflow;
 
+    protected $filelog;
+
     public function __construct($file = null)
     {
         $this->workflow_file = $file;
@@ -171,11 +173,12 @@ abstract class StateMachineAbstract implements StateMachineInterface
      * @param $condition
      * @return string
      */
-    private function convertToStringCondition($condition)   {
-        if(is_bool($condition)){
-            if($condition){
+    private function convertToStringCondition($condition)
+    {
+        if (is_bool($condition)) {
+            if ($condition) {
                 return "TRUE";
-            }else{
+            } else {
                 return "FALSE";
             }
         }
