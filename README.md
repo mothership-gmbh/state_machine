@@ -27,6 +27,11 @@ or for the dev-master version:
 ```
 Then just run *composer install*
 
+**StateMachine render graph functionality needs *graphviz* library:**
+```
+sudo apt-get install graphviz
+```
+
 #HOW
 In the folder *exemple* there are some exemple of how use this repo.
 
@@ -147,12 +152,6 @@ Render the graph of your state machine:
 **$paht**: path where the state machine will save the image
 
 **true/false**: if you want that after the render the state machine exits (default is true)
-
-#Installation
-StateMachine need *graphviz* library installed on the machine to render the graph option:
-```
-sudo apt-get install graphviz
-```
 
 #Tests
 - Run test from root directory:
