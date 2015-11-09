@@ -1,4 +1,4 @@
-Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
+Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=%231_add_logging_system)
 -----------------------------------------
 A PHP based state machine implementation.
 
