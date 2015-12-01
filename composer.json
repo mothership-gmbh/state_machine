@@ -16,7 +16,8 @@
     "mothership/component_base": "0.1.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.8"
+    "phpunit/phpunit": "4.8",
+    "escapestudios/symfony2-coding-standard": "~2.0"
   },
   "autoload": {
     "psr-4": {
@@ -28,4 +29,3 @@
     ]
   }
 }
-
