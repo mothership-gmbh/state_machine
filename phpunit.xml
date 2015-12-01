@@ -15,7 +15,7 @@
         >
     <testsuites>
         <testsuite name="statemachine">
-            <directory>./tests/StateMachine/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -24,9 +24,16 @@
             <file>src/Mothership/StateMachine/Exception/StatusException.php</file>
             <file>src/Mothership/StateMachine/Exception/TransitionException.php</file>
             <file>src/Mothership/StateMachine/Exception/WorkflowException.php</file>
+            <file>src/Mothership/StateMachine/WorkflowInterface.php</file>
+            <file>src/Mothership/StateMachine/TransitionInterface.php</file>
+            <file>src/Mothership/StateMachine/StatusInterface.php</file>
+            <file>src/Mothership/StateMachine/StateMachineInterface.php</file>
         </blacklist>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src/Mothership/StateMachine</directory>
+            <file>src/Mothership/StateMachine/StateMachineAbstract.php</file>
+            <file>src/Mothership/StateMachine/Status.php</file>
+            <file>src/Mothership/StateMachine/Transition.php</file>
+            <file>src/Mothership/StateMachine/WorkflowAbstract.php</file>
         </whitelist>
 
     </filter>

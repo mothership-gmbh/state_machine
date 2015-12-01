@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Magento
+ * Mothership GmbH
  *
  * NOTICE OF LICENSE
  *
@@ -11,68 +10,36 @@
  * http://opensource.org/licenses/osl-3.0.php
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
+ * to office@mothership.de so we can send you a copy immediately.
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
+ * needs please refer to http://www.mothership.de for more information.
  *
  * @category  Mothership
- * @package   Mothership_{EXTENSION NAME}
+ * @package   Mothership_state_machine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @copyright Copyright (c) 2015 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
-class MothershipBaseTestCase extends PHPUnit_Framework_TestCase
+use Mothership\Tests\MothershipBaseTestCase;
+/**
+ * StateMachineTestCase
+ *
+ * @category  Mothership
+ * @package   Mothership_State_machine
+ * @author    Maurizio Brioschi <brioschi@mothership.de>
+ * @copyright 2015 Mothership GmbH
+ * @link      http://www.mothership.de/
+ */
+class StateMachineTestCase extends MothershipBaseTestCase
 {
     protected $exempleDir = '/exemple';
     protected $excludeDir = ['Fail'];
 
-    /**
-     * call private methods
-     *
-     * @param object &$object Object
-     * @param string $methodName methods
-     * @param array $parameters params
-     * @return mixed Method return.
-     */
-    protected function invokeMethod(&$object, $methodName, array $parameters = array())
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-        return $method->invokeArgs($object, $parameters);
-    }
-
-    /**
-     * get private property value
-     * @param type $object
-     * @param type $propertyName
-     * @return type
-     */
-    protected function getPropertyValue(&$object, $propertyName)
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $property = $reflection->getProperty($propertyName);
-        $property->setAccessible(true);
-        return $property->getValue($object);
-    }
-
-    /**
-     * @param $object
-     * @param $propertyName
-     * @return string
-     */
-    protected function getPropertyClass(&$object, $propertyName)
-    {
-        $reflection = new \ReflectionClass(get_class($object));
-        $property = $reflection->getProperty($propertyName);
-        $property->setAccessible(true);
-        return get_class($property->getValue($object));
-    }
 
     /**
      * Return all the directories containing exemples
