@@ -47,13 +47,33 @@ class Status implements StatusInterface
      * @var array
      */
     protected $properties;
-    protected $types = ['initial', 'normal', 'final'];
-    private $workflow;
+
+    /**
+     * @var array
+     */
+    protected $types = [StatusInterface::TYPE_INITIAL, StatusInterface::TYPE_NORMAL, StatusInterface::TYPE_FINAL];
+
+    /**
+     * @var
+     */
     protected $internalState;
 
+    /**
+     * @var array|mixed
+     */
     protected $transitions = array();
 
+    /**
+     * @var \Mothership\StateMachine\WorkflowInterface
+     */
+    private $workflow;
 
+    /**
+     * @param \Mothership\StateMachine\WorkflowInterface $workflow
+     * @param array                                      $properties
+     *
+     * @throws StatusException
+     */
     public function __construct(WorkflowInterface $workflow, array $properties = [])
     {
         $this->workflow = $workflow;
@@ -63,6 +83,7 @@ class Status implements StatusInterface
 
     /**
      * @return mixed
+     *
      * @throws StatusException
      */
     public function getName()
@@ -75,6 +96,7 @@ class Status implements StatusInterface
 
     /**
      * @return mixed
+     *
      * @throws StatusException
      */
     public function getType()
@@ -90,7 +112,9 @@ class Status implements StatusInterface
 
     /**
      * Get if is an initial state
+     *
      * @return bool
+     *
      * @throws StatusException
      */
     protected function isInitialType()
@@ -100,6 +124,7 @@ class Status implements StatusInterface
 
     /**
      * @return mixed
+     *
      * @throws Exception
      * @throws StatusException
      */
@@ -122,6 +147,8 @@ class Status implements StatusInterface
                     85, null);
             }
         } else if ($this->isInitialType()) {
+
+
             $this->transitions = [];
         }
         return $this->transitions;
@@ -130,35 +157,30 @@ class Status implements StatusInterface
     /**
      * @param $transition_name
      * @param \Mothership\StateMachine\StatusInterface $current_status
+     *
      * @return bool
+     *
      * @throws StatusException
      * @internal param \Mothership\StateMachine\TransictionInterface $transition
      */
     public function execute($transition_name, StatusInterface $current_status)
     {
-        foreach ($this->transitions as $t) {
-            if ($t->hasCondition()) {
-                if ($t->getTransitionFrom() == $current_status->getName() && $t->getName() == $transition_name &&
-                    $this->workflow->getStatus($current_status->getName())->getInternalStatus() == $t->getCondition()
+        foreach ($this->transitions as $_transition) {
+            /* @var $_transition Transition */
+
+            if ($_transition->hasCondition()) {
+                if ($_transition->getTransitionFrom() == $current_status->getName() && $_transition->getName() == $transition_name &&
+                    $this->workflow->getStatus($current_status->getName())->getInternalStatus() == $_transition->getCondition()
                 ) {
-                    return $t->process();
-                } else if ($this->workflow->getStatus($current_status->getName())->getInternalStatus() != $t->getCondition()) {
-                    throw new StatusException("STATUS: [" . $transition_name . "] cant't run from [" . $current_status->getName()
-                        . "] for a different internalState of [" . $current_status->getName() . " => current internal
-                        State: "
-                        . $this->workflow->getStatus($current_status->getName())->getInternalStatus() . ", Status
-                        need: " . $t->getCondition() . " ]",
-                        10,
-                        null);
+                    return $_transition->process();
                 }
             } else {
-                if ($t->getTransitionFrom() == $current_status->getName() && $t->getName() == $transition_name) {
-                    return $t->process();
+                if ($_transition->getTransitionFrom() == $current_status->getName() && $_transition->getName() == $transition_name) {
+                    return $_transition->process();
                 }
             }
         }
-        throw new StatusException("STATUS: [" . $transition_name . "] can't run from [" . $current_status->getName() . "]", 30,
-            null);
+        throw new StatusException("STATUS: [" . $transition_name . "] can't run from [" . $current_status->getName() . "]", 30, null);
     }
 
     /**
@@ -204,7 +226,9 @@ class Status implements StatusInterface
 
     /**
      * Set the internal status, useful if the next step need a condition to be executed
+     *
      * @param $state
+     *
      * @return mixed
      */
     public function setInternalStatus($state)
@@ -214,6 +238,7 @@ class Status implements StatusInterface
 
     /**
      * Get the internal status
+     *
      * @return mixed
      */
     public function getInternalStatus()
@@ -221,6 +246,9 @@ class Status implements StatusInterface
         return $this->internalState;
     }
 
+    /**
+     * @return bool
+     */
     public function hasInternalState()
     {
         if (!isset($this->internalState) || !isnull($this->internalState)) {

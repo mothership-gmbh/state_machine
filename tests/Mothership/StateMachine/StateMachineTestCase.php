@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
-use Mothership\Tests\MothershipBaseTestCase;
+use Mothership\Tests\BaseTestCase;
 /**
  * StateMachineTestCase
  *
@@ -35,7 +35,7 @@ use Mothership\Tests\MothershipBaseTestCase;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTestCase extends MothershipBaseTestCase
+class StateMachineTestCase extends BaseTestCase
 {
     protected $exempleDir = '/exemple';
     protected $excludeDir = ['Fail'];

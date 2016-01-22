@@ -1,5 +1,6 @@
 <?php
 namespace Mothership\StateMachine;
+
 /**
  * Mothership GmbH
  *
@@ -30,6 +31,7 @@ use Mothership\StateMachine\Exception\StatusException;
 use Mothership\StateMachine\Exception\TransictionException;
 use Mothership\StateMachine\Exception\WorkflowException;
 use \Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Class WorkflowAbstract
  *
@@ -43,11 +45,12 @@ abstract class WorkflowAbstract implements WorkflowInterface
 {
     /**
      * Usefull variables for the object passed throw workflow configuration file
+     *
      * @var array
      */
     protected $vars = [];
     /**
-     * @var StatusInterface;
+     * @var mixed[StatusInterface];
      */
     protected $states = [];
     /**
@@ -55,6 +58,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     protected $current_status;
 
+    /**
+     * @param array $args
+     *
+     * @throws WorkflowException
+     */
     public function __construct(array $args = [])
     {
         foreach ($args as $key => $value) {
@@ -66,6 +74,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * Get the output for the workflow
+     *
      * @return OutputInterface
      */
     public function getOutput()
@@ -84,20 +93,28 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
         //check if all the methods for each status is callable
         $methods_not_implemented = "";
-        try{
+        try {
             foreach ($this->vars['states'] as $status) {
                 array_push($this->states, new Status($this, $status));
-                if (!method_exists($this, $status['name'])) {
+
+                /**
+                 * The initial state will never be executed but only the transitions, therefore it will be excluded
+                 * from the list of methods which must be implemented
+                 */
+                if (!method_exists($this, $status['name']) && $status['type'] != 'initial') {
                     $methods_not_implemented .= $status['name'] . "\n";
                 }
             }
-        }catch (StatusException $ex)    {
-            throw new WorkflowException("Error in one state of the workflow:\n" .$ex->getMessage(), 79);
+        } catch (StatusException $ex) {
+            throw new WorkflowException("Error in one state of the workflow:\n" . $ex->getMessage(), 79);
         }
 
+
         if (strlen($methods_not_implemented) > 0) {
-            throw new WorkflowException("This methods are not implemented in the workflow:\n" .
-                $methods_not_implemented, 79, null);
+            throw new WorkflowException(
+                "This methods are not implemented in the workflow:\n" .
+                $methods_not_implemented, 79, null
+            );
         }
 
         $this->setInitialState();
@@ -112,6 +129,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
         foreach ($this->states as $status) {
             if ($status->getType() == 'initial') {
                 $this->current_status = $status;
+
                 return $status;
             }
         }
@@ -119,19 +137,24 @@ abstract class WorkflowAbstract implements WorkflowInterface
     }
 
     /**
-     * @param $transiction_name
+     * @param $transition_name
+     *
      * @return mixed|void
+     *
      * @throws WorkflowException
      */
-    protected function executeTransition($transiction_name)
+    protected function executeTransition($transition_name)
     {
         try {
-            $status = $this->getStatus($transiction_name);
-            return $status->execute($transiction_name, $this->current_status);
+            //echo "\ntransit to " . $transition_name;
+            $status = $this->getStatus($transition_name);
+
+            return $status->execute($transition_name, $this->current_status);
         } catch (StatusException $ex) {
             if ($ex->getGravity() > 50) {
                 throw new WorkflowException("Error executing the transition", 100, $ex, null);
             }
+
             return false;
         } catch (TransitionException $ex) {
             throw new WorkflowException("Error executing the transition", 100, $ex, null);
@@ -140,6 +163,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * Return the current status of the workflow
+     *
      * @return \Mothership\StateMachine\StatusInterface $status
      */
     function getCurrentStatus()
@@ -149,7 +173,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * Set the status of the workflow
+     *
      * @param \Mothership\StateMachine\StatusInterface $status
+     *
      * @return mixed
      */
     function setState(StatusInterface $status)
@@ -159,7 +185,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * Get the status of the workflow by its name
+     *
      * @param $name
+     *
      * @return \Mothership\StateMachine\StatusInterface WorkflowException
      * @throws WorkflowException
      */
@@ -175,18 +203,22 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * execute the workflow
+     *
+     * @param mixed $args Optional arguments
+     *
+     * @return bool
      */
-    public function run()
+    public function run(array $args = [])
     {
         $states_count = count($this->states);
         for ($i = 1; $i < $states_count; $i++) {
-            $transations = $this->states[$i]->getTransitions();
-            foreach ($transations as $t) {
+            $transitions = $this->states[$i]->getTransitions();
+            foreach ($transitions as $_transition) {
                 try {
-                    $status = $this->executeTransition($t->getName());
+                    $status = $this->executeTransition($_transition->getName());
                     if ($status !== false) {
                         $this->current_status = $status;
-                        $changeStatus = $this->checkIfPreviousTransition($status);
+                        $changeStatus         = $this->checkIfPreviousTransition($status);
                         if ($changeStatus !== false) {
                             $i = $this->getStatusIndex($changeStatus);
                             break;
@@ -202,15 +234,17 @@ abstract class WorkflowAbstract implements WorkflowInterface
                         break;
                     }
                 }
-
             }
         }
+
         return true;
     }
 
     /**
      * Get the position of a state
+     *
      * @param $statusname
+     *
      * @return int
      */
     private function getStatusIndex($statusname)
@@ -225,7 +259,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
     /**
      * Check if there is a previous transition that could be executed from $status
+     *
      * @param \Mothership\StateMachine\StatusInterface $status
+     *
      * @return bool|string false or the name of the status to execute
      */
     private function checkIfPreviousTransition(StatusInterface $status)
@@ -239,8 +275,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 }
             }
         }
+
         return false;
     }
-
 }
-
