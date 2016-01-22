@@ -1,0 +1,87 @@
+#class of the model
+class:
+  name: Exemple\Advanced\AdvancedWorkflow
+  args: []
+
+#definition of the states and transition...the order establishes the transition from one state to another
+#the name of each state is NOT case sensitive
+states:
+
+  # initialize the logging and stuff
+  start:
+    type: initial
+
+  second_state:
+    type: normal
+    transitions_from: [start]
+    transitions_to:   [second_state]
+
+  load_document:
+    type: normal
+    transitions_from: [second_state]
+    transitions_to:   [load_document]
+
+  has_images:
+    type: normal
+    transitions_from: [load_document]
+    transitions_to:   [has_images]
+
+  download_directory_exist:
+    type: normal
+    transitions_from: [has_images]
+    transitions_to:   [download_directory_exist]
+
+  product_has_media_gallery:
+    type: normal
+    transitions_from: [download_directory_exist]
+    transitions_to:   [product_has_media_gallery]
+
+  create_media_gallery:
+    type: normal
+    transitions_from: [{status: product_has_media_gallery, result:  false}]
+    transitions_to:   [create_media_gallery]
+
+  get_images:
+    type: normal
+    transitions_from: [{status: product_has_media_gallery, result:  true}, create_media_gallery]
+    transitions_to:   [get_images]
+
+  process_images:
+    type: normal
+    transitions_from: [get_images, {status: has_more, result:  true}]
+    transitions_to:   [process_images]
+
+  original_image_exist_as_copy:
+    type: normal
+    transitions_from: [process_images]
+    transitions_to:   [original_image_exist_as_copy]
+
+  hash_equals_original:
+    type: normal
+    transitions_from: [{status: original_image_exist_as_copy, result:  true}]
+    transitions_to:   [copy_equals_original]
+
+  remove_existing:
+    type: normal
+    transitions_from: [{status: hash_equals_original, result:  false}]
+    transitions_to:   [is_new]
+
+  download_original:
+    type: normal
+    transitions_from: [{status: original_image_exist_as_copy, result:  false}, remove_existing]
+    transitions_to:   [download_original]
+
+  assign_image:
+    type: normal
+    transitions_from: [{status: hash_equals_original, result:  true}, download_original]
+    transitions_to:   [assign_image]
+
+  has_more:
+    type: normal
+    transitions_from: [assign_image]
+    transitions_to:   [has_more]
+
+  finish:
+    type: final
+    transitions_from:  [{status: has_more, result:  false}]
+    transitions_to:  [finish]

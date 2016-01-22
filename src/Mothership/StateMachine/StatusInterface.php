@@ -1,5 +1,4 @@
 <?php
-namespace Mothership\StateMachine;
 /**
  * Mothership GmbH
  *
@@ -22,10 +21,12 @@ namespace Mothership\StateMachine;
  * @category  Mothership
  * @package   Mothership_state_machine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright Copyright (c) 2016 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
+namespace Mothership\StateMachine;
 
 /**
  * Interface StatusInterface
@@ -38,6 +39,15 @@ namespace Mothership\StateMachine;
  */
 interface StatusInterface
 {
+    // There can only be on state 'initial'
+    CONST TYPE_INITIAL = 'initial';
+
+    // There also can only be one state final
+    CONST TYPE_FINAL   = 'final';
+
+    // All other states must be normal
+    CONST TYPE_NORMAL  = 'normal';
+
     /**
      * Returns the state name
      *
@@ -60,9 +70,11 @@ interface StatusInterface
     public function getTransitions();
 
     /**
-     * Check if a transiction can be run from this status
-     * @param $transition_name
+     * Check if a transition can be run from this status
+     *
+     * @param string          $transition_name
      * @param StatusInterface $status_from
+     *
      * @return mixed
      */
     public function execute($transition_name, StatusInterface $status_from);
@@ -99,4 +111,3 @@ interface StatusInterface
      */
     public function setInternalStatus($state);
 }
-

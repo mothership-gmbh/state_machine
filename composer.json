@@ -7,8 +7,13 @@
     {
       "name": "Maurizio Brioschi",
       "email": "brioschi@mothership.de"
+    },
+    {
+      "name": "Don Bosco van Hoi",
+      "email": "vanhoi@mothership.de"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "php": ">=5.5",
     "symfony/console": "2.7.*",

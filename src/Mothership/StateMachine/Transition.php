@@ -49,10 +49,16 @@ class Transition implements TransitionInterface
     protected $hasCondition;
     protected $condition;
 
+    /**
+     *
+     *
+     * @param StatusInterface $status
+     * @param                 $transition_from
+     */
     public function __construct(StatusInterface $status, $transition_from)
     {
         $this->status = $status;
-        $this->name = $status->getName();
+        $this->name   = $status->getName();
         if (!is_array($transition_from)) {
             $this->transiction_from = $transition_from;
             $this->hasCondition = false;
@@ -74,15 +80,16 @@ class Transition implements TransitionInterface
         return $this->status;
     }
 
-
     /**
      * @return mixed
+     *
      * @throws TransitionException
      */
     public function process()
     {
         try {
             $method = $this->getMethodToRun();
+            //echo "\nMethod . " . $method;
             $result = $this->getStatus()->getWorkflow()->$method();
             $this->getStatus()->setInternalStatus($result);
             return $this->getStatus();
@@ -103,6 +110,7 @@ class Transition implements TransitionInterface
 
     /**
      * Get the starting point of the transiction
+     *
      * @return mixed
      */
     public function getTransitionFrom()

@@ -129,7 +129,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
                 rankdir=LR;
                 size=\"%d\"
 
-                node [shape = doublecircle]; S;
+                node [shape = doublecircle]; start;
                 node [shape = circle];
 
                 %s
@@ -161,12 +161,18 @@ abstract class StateMachineAbstract implements StateMachineInterface
     }
 
     /**
-     * Run the state machine
+     * Run the state machine with optional arguments
+     *
+     * @param array $args
+     *
+     * @return mixed
+     *
+     * @throws StateMachineException
      */
-    public function run()
+    public function run(array $args = [])
     {
         try {
-            return $this->workflow->run();
+            return $this->workflow->run($args);
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Error running State Machine", 100, $ex);
         }
@@ -174,19 +180,22 @@ abstract class StateMachineAbstract implements StateMachineInterface
 
     /**
      * Convert the Condition to string
+     *
      * @param $condition
+     *
      * @return string
      */
-    private function convertToStringCondition($condition)   {
-        if(is_bool($condition)){
-            if($condition){
+    private function convertToStringCondition($condition)
+    {
+        if (is_bool($condition)) {
+            if ($condition) {
                 return "TRUE";
-            }else{
+            } else {
                 return "FALSE";
             }
         }
-        return (string)$condition;
-    }
 
+        return (string) $condition;
+    }
 }
 

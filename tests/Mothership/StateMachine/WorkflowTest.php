@@ -54,11 +54,13 @@ class WorkflowTest extends StateMachineTestCase
          */
         $status = $workflow->getCurrentStatus();
         $this->isInstanceOf('Mothership\StateMachine\StatusInterface', $status);
+
         /**
          * getStatus
          */
         $status = $workflow->getStatus('second_state');
         $this->isInstanceOf('Mothership\StateMachine\StatusInterface', $status);
+
         /**
          * run
          */
