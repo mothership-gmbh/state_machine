@@ -20,24 +20,24 @@ namespace Mothership\StateMachine;
  * needs please refer to http://www.mothership.de for more information.
  *
  * @category  Mothership
- * @package   Mothership_state_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright Copyright (c) 2016 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
-use Mothership\StateMachine\Exception\StatusException;
 use Mothership\StateMachine\Exception\TransitionException;
-use Mothership\Exception\WorkflowException;
-use Mothership\StateMachine\StateMachine;
-use Mothership\StateMachine\TransitionInterface;
+use Mothership\StateMachine\Exception\WorkflowException;
+
 /**
  * Class Transition
  *
  * @category  Mothership
- * @package   Mothership_State_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
 class Transition implements TransitionInterface
@@ -89,8 +89,19 @@ class Transition implements TransitionInterface
     {
         try {
             $method = $this->getMethodToRun();
-            //echo "\nMethod . " . $method;
+
+            if (method_exists($this->getStatus()->getWorkflow(), '_preDispatch')) {
+                $methodPre = '_preDispatch';
+                $this->getStatus()->getWorkflow()->$methodPre($method);
+            }
+
             $result = $this->getStatus()->getWorkflow()->$method();
+
+            if (method_exists($this->getStatus()->getWorkflow(), '_postDispatch')) {
+                $methodPre = '_postDispatch';
+                $this->getStatus()->getWorkflow()->$methodPre($method);
+            }
+
             $this->getStatus()->setInternalStatus($result);
             return $this->getStatus();
         } catch (WorkflowException $ex) {

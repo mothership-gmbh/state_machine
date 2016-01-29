@@ -5,10 +5,10 @@ A PHP based state machine implementation.
 For more informations visit the [website](http://mothership-gmbh.github.io/state_machine)
 
 #Features
-- Create, configure and run a complete State Machine.
-- Configuration of each state of the machine can be set completely up from a *yml* file.
-- Possibility to run State machine with only one command that visits all the possible nodes
-- Possibility to render an graphic image that show the behaviour of the state machine
+- Create a FSM-compatible state machine
+- Define your states, transitions and conditions completely in a configuration file. Currently only supports YAML
+- NO additional logic is needed to process the transitions. The state machine will automatically try to detect valid transitions
+- Rnder an graphic image that shows the behaviour of the state machine
     
   ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/BooleanConditions/workflow.png)
 
@@ -32,7 +32,7 @@ Then just run *composer install*
 sudo apt-get install graphviz
 ```
 
-#HOW
+#Usage
 In the folder *exemple* there are some exemple of how use this repo.
 
 All exemple are tested and run: they are the base for all the unit test.
@@ -91,6 +91,7 @@ transitions_from:
 ```
 
 - Create your php class *Workfow* for the state machine (The same configured in the *yml* configuration file) that extends **Mothership\StateMachine\WorkflowAbstract**
+
 ```
 namespace Exemple\SimpleStateMachine;
 
@@ -121,6 +122,7 @@ class Workflow extends WorkflowAbstract
 ```
 
 - Create your own State machine extending **Mothership\StateMachine\StateMachineAbstract**
+
 ```
 namespace Exemple\SimpleStateMachine;
 
@@ -154,10 +156,7 @@ Render the graph of your state machine:
 **true/false**: if you want that after the render the state machine exits (default is true)
 
 #Tests
-- Run test from root directory:
-```
-phpunit --coverage-text
-```
+- Run test from root directory: ```phpunit --coverage-text```
 - You can add your State machine adding it in the *exemple* folder and it will be automatically tested with the 
 command about. **Just use the same conventions name space**
 

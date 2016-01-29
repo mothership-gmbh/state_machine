@@ -28,7 +28,7 @@ namespace Mothership\StateMachine;
  * @link      http://www.mothership.de/
  */
 use Mothership\StateMachine\Exception\StatusException;
-use Mothership\StateMachine\Exception\TransictionException;
+use Mothership\StateMachine\Exception\TransitionException;
 use Mothership\StateMachine\Exception\WorkflowException;
 use \Symfony\Component\Console\Output\OutputInterface;
 
@@ -59,6 +59,13 @@ abstract class WorkflowAbstract implements WorkflowInterface
     protected $current_status;
 
     /**
+     * @var \Symfony\Component\Console\Output\ConsoleOutput
+     */
+    protected $output;
+
+    /**
+     * Assign all arguments to keys
+     *
      * @param array $args
      *
      * @throws WorkflowException
@@ -73,9 +80,29 @@ abstract class WorkflowAbstract implements WorkflowInterface
     }
 
     /**
+     * Return the variables which are set via the $args parameter
+     *
+     * @param null|string $key
+     *
+     * @return array|null
+     */
+    public function getArgs($key = null)
+    {
+        if (null === $key) {
+            return $this->args;
+        }
+
+        if (!isset($this->args[$key])) {
+            return null;
+        }
+
+        return $this->args[$key];
+    }
+
+    /**
      * Get the output for the workflow
      *
-     * @return OutputInterface
+     * @return \Symfony\Component\Console\Output\ConsoleOutput
      */
     public function getOutput()
     {
@@ -121,7 +148,10 @@ abstract class WorkflowAbstract implements WorkflowInterface
     }
 
     /**
+     * The initial state must always be 'initial'
+     *
      * @return StatusInterface
+     *
      * @throws WorkflowException
      */
     function setInitialState()
@@ -213,6 +243,8 @@ abstract class WorkflowAbstract implements WorkflowInterface
         $states_count = count($this->states);
         for ($i = 1; $i < $states_count; $i++) {
             $transitions = $this->states[$i]->getTransitions();
+
+            /* @var \Mothership\StateMachine\Transition $_transition */
             foreach ($transitions as $_transition) {
                 try {
                     $status = $this->executeTransition($_transition->getName());
