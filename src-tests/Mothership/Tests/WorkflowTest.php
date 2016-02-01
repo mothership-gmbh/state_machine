@@ -27,20 +27,21 @@
  */
 use Symfony\Component\Yaml\Yaml;
 
-use Exemple\Simple\SimpleWorkflow;
-use Exemple\IfConditions\IfConditionsWorkflow;
-use Exemple\Fail\FailStateMachine;
-use Exemple\Fail\FailWorkflow;
+use Mothership\Examples\Simple\SimpleWorkflow;
+use Mothership\Examples\IfConditions\IfConditionsWorkflow;
+use Mothership\Examples\Fail\FailStateMachine;
+use Mothership\Examples\Fail\FailWorkflow;
 /**
  * WorkflowTest
  *
  * @category  Mothership
  * @package   Mothership_State_machine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class WorkflowTest extends StateMachineTestCase
+class WorkflowTest extends \Mothership\Tests\StateMachineTestCase
 {
     /**
      * @dataProvider    workflowGoodProvider
