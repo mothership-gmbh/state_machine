@@ -15,7 +15,7 @@
         >
     <testsuites>
         <testsuite name="statemachine">
-            <directory>./tests/</directory>
+            <directory>./src-tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
