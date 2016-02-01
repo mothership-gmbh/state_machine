@@ -20,9 +20,10 @@ namespace Mothership\StateMachine;
  * needs please refer to http://www.mothership.de for more information.
  *
  * @category  Mothership
- * @package   Mothership_state_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright Copyright (c) 2016 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
@@ -33,17 +34,26 @@ use Symfony\Component\Yaml\Yaml;
  * Class StateMachineAbstract
  *
  * @category  Mothership
- * @package   Mothership_State_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
 abstract class StateMachineAbstract implements StateMachineInterface
 {
+    /**
+     * @var null|string
+     */
     protected $workflow_file;
     protected $workflow_array;
     protected $workflow;
 
+    /**
+     * @param string $file
+     *
+     * @throws StateMachineException
+     */
     public function __construct($file = null)
     {
         $this->workflow_file = $file;
@@ -67,8 +77,10 @@ abstract class StateMachineAbstract implements StateMachineInterface
 
     /**
      * Parse the yaml file
+     *
      * @return array
-     * @throws Symfony\Component\Yaml\Exception\ParseException
+     *
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
      * @throws \Exception
      */
     protected function parseYAML()
@@ -99,6 +111,8 @@ abstract class StateMachineAbstract implements StateMachineInterface
 
     /**
      * Create the instance of the real workflow
+     *
+     * @return void
      */
     protected function initWorkflow()
     {
@@ -108,14 +122,17 @@ abstract class StateMachineAbstract implements StateMachineInterface
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Workflow with some problems", 90, $ex);
         }
-
     }
 
     /**
      * create a graph for the state machine
-     * @param bool|false $exit if we want to exit after graphic generation
+     *
+     * @param string     $outputPath         relative path of the generated image
+     * @param bool|false $stopAfterExecution if we want to exit after graphic generation
+     *
+     * @return void
      */
-    public function renderGraph($outputPath = './workflow.png', $exit = true)
+    public function renderGraph($outputPath = './workflow.png', $stopAfterExecution = true)
     {
 
         /**
@@ -155,7 +172,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
         file_put_contents('/tmp/sm.gv', sprintf($template, count($_transitions) * 2, implode("\n", $_transitions)));
         shell_exec('dot -Tpng /tmp/sm.gv -o ' . $outputPath);
 
-        if ($exit) {
+        if ($stopAfterExecution) {
             exit;
         }
     }

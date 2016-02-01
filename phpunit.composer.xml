@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="../../autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         syntaxCheck="false"
+         stopOnError="true"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+        >
+    <testsuites>
+        <testsuite name="statemachine">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <file>src/Mothership/StateMachine/Exception/StateMachineException.php</file>
+            <file>src/Mothership/StateMachine/Exception/StatusException.php</file>
+            <file>src/Mothership/StateMachine/Exception/TransitionException.php</file>
+            <file>src/Mothership/StateMachine/Exception/WorkflowException.php</file>
+            <file>src/Mothership/StateMachine/WorkflowInterface.php</file>
+            <file>src/Mothership/StateMachine/TransitionInterface.php</file>
+            <file>src/Mothership/StateMachine/StatusInterface.php</file>
+            <file>src/Mothership/StateMachine/StateMachineInterface.php</file>
+        </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <file>src/Mothership/StateMachine/StateMachineAbstract.php</file>
+            <file>src/Mothership/StateMachine/Status.php</file>
+            <file>src/Mothership/StateMachine/Transition.php</file>
+            <file>src/Mothership/StateMachine/WorkflowAbstract.php</file>
+        </whitelist>
+
+    </filter>
+</phpunit>
