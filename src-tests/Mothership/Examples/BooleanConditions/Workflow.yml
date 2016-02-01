@@ -1,6 +1,6 @@
 #class of the model
 class:
-  name: Exemple\IfConditions\IfConditionsWorkflow
+  name: Mothership\Examples\IfConditions\IfConditionsWorkflow
   args:
     startingIndex: 0
     limit: 20

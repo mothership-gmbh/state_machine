@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *
@@ -26,11 +27,46 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\Simple;
+namespace Mothership\Examples\IfConditions;
 
-use Mothership\StateMachine\StateMachineAbstract;
+use Mothership\StateMachine\WorkflowAbstract;
 
-class SimpleStateMachine extends StateMachineAbstract
+class IfConditionsWorkflow extends WorkflowAbstract
 {
+    protected $index = 0;
+    protected $limit = 10;
 
+    function start()
+    {
+
+    }
+
+    function second_state()
+    {
+
+    }
+
+    function third_state()
+    {
+        if ($this->index > $this->limit) {
+            return 0;
+        } else {
+            return rand(1, 2);
+        }
+    }
+
+    function transition_state()
+    {
+        $this->index++;
+    }
+
+    function second_transition_state()
+    {
+        $this->index++;
+    }
+
+    function finish()
+    {
+
+    }
 }

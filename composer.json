@@ -26,11 +26,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Mothership\\StateMachine\\": "src/Mothership/StateMachine/",
-      "Exemple\\": "exemple/"
+      "Mothership\\StateMachine\\": "src/Mothership/StateMachine/"
     },
-    "files": [
-      "tests/Mothership/StateMachine/StateMachineTestCase.php"
-    ]
+    "autoload-dev": {
+      "psr-4": {
+        "Mothership\\Tests\\": "src-tests/Tests",
+        "Mothership\\Examples\\": "src-test/Examples"
+      }
+    }
   }
 }

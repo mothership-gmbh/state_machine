@@ -26,11 +26,11 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\IfConditions;
+namespace Mothership\Examples\BooleanConditions;
 
 use Mothership\StateMachine\StateMachineAbstract;
 
-class IfConditionsStateMachine extends StateMachineAbstract
+class BooleanConditionsStateMachine extends StateMachineAbstract
 {
 
 }
