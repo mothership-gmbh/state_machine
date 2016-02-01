@@ -41,7 +41,7 @@ namespace Mothership\Tests\StateMachine;
  */
 class StateMachineTestCase extends \PHPUnit_Framework_TestCase
 {
-    use Mothership\Tests\TraitBase;
+    use \Mothership\Tests\TraitBase;
 
     protected $exampleDir = '/src-tests/Mothership/Examples';
     protected $excludeDir = ['Fail'];
