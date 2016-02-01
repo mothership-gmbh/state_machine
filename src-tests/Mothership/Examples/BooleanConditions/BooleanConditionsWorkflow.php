@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *
@@ -26,11 +27,57 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\Fail;
+namespace Mothership\Examples\BooleanConditions;
 
-use Mothership\StateMachine\StateMachineAbstract;
+use Mothership\StateMachine\WorkflowAbstract;
 
-class FailStateMachine extends StateMachineAbstract
+class BooleanConditionsWorkflow extends WorkflowAbstract
 {
+    protected $index;
+    protected $limit;
 
+    public function __construct(array $array){
+        parent::__construct($array);
+        $args =  $this->vars['class']['args'];
+        $this->index = $args['startingIndex'];
+        $this->limit = $args['limit'];
+    }
+
+    function start()
+    {
+
+    }
+
+    function second_state()
+    {
+
+    }
+
+    function third_state()
+    {
+        if ($this->index > $this->limit) {
+            return true;
+        } else {
+            $value = rand(1, 2);
+            if($value==1)   {
+                return 1;
+            }
+            return false;
+        }
+    }
+
+    function transition_state()
+    {
+        $this->index++;
+    }
+
+    function second_transition_state()
+    {
+        $this->index++;
+    }
+
+    function finish()
+    {
+
+    }
 }

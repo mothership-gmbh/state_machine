@@ -27,20 +27,21 @@
  */
 use Symfony\Component\Yaml\Yaml;
 
-use Exemple\Simple\SimpleWorkflow;
-use Exemple\IfConditions\IfConditionsWorkflow;
-use Exemple\Fail\FailStateMachine;
-use Exemple\Fail\FailWorkflow;
+use Mothership\Examples\Simple\SimpleWorkflow;
+use Mothership\Examples\IfConditions\IfConditionsWorkflow;
+use Mothership\Examples\Fail\FailStateMachine;
+use Mothership\Examples\Fail\FailWorkflow;
 /**
  * WorkflowTest
  *
  * @category  Mothership
  * @package   Mothership_State_machine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class WorkflowTest extends StateMachineTestCase
+class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
 {
     /**
      * @dataProvider    workflowGoodProvider
@@ -83,13 +84,13 @@ class WorkflowTest extends StateMachineTestCase
      */
     public function workflowGoodProvider()
     {
-        $this->state_machine_dir = $this->getExemplesDir();
+        $this->state_machine_dir = $this->getExamplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
-            $state_machine_class = "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
+            $state_machine_class = "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
             $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
             array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
+                "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 $this->invokeMethod($state_machine, "parseYAML"),
             ]);
         }
@@ -104,11 +105,11 @@ class WorkflowTest extends StateMachineTestCase
     {
         $workflow = [];
         array_push($workflow, [
-            "Exemple\\Simple\\SimpleWorkflow",
+            "Mothership\\Examples\\Simple\\SimpleWorkflow",
             []
         ]);
         array_push($workflow, [
-            "Exemple\\Simple\\SimpleWorkflow",
+            "Mothership\\Examples\\Simple\\SimpleWorkflow",
             ['arg1' => 1, 'args2' => 2]
         ]);
 
@@ -121,7 +122,7 @@ class WorkflowTest extends StateMachineTestCase
      */
     public function testMethodNotImplementedException()
     {
-        $workflow_class = "Exemple\\Fail\\FailWorkflow";
+        $workflow_class = "Mothership\\Examples\\Fail\\FailWorkflow";
         $workflow = new $workflow_class([
             'states' => [
                 'start' => [],

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magento
  *
@@ -27,24 +26,11 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\Fail;
+namespace Mothership\Examples\IfConditions;
 
-use Mothership\StateMachine\WorkflowAbstract;
+use Mothership\StateMachine\StateMachineAbstract;
 
-class FailWorkflow extends WorkflowAbstract
+class IfConditionsStateMachine extends StateMachineAbstract
 {
-    function start()
-    {
 
-    }
-
-    function second_state()
-    {
-
-    }
-
-    function finish()
-    {
-
-    }
 }

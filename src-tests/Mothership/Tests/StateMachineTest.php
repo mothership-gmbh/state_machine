@@ -27,9 +27,9 @@
  * @link      http://www.mothership.de/
  */
 
-use Exemple\Simple\SimpleStateMachine;
-use Exemple\IfConditions\IfConditionsStateMachine;
-use Exemple\BooleanConditions\BooleanConditionsStateMachine;
+use \Mothership\Examples\Simple\SimpleStateMachine;
+use \Mothership\Examples\IfConditions\IfConditionsStateMachine;
+use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
 /**
  * Class StateMachineTest
  *
@@ -39,7 +39,7 @@ use Exemple\BooleanConditions\BooleanConditionsStateMachine;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTest extends StateMachineTestCase
+class StateMachineTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];
@@ -69,15 +69,15 @@ class StateMachineTest extends StateMachineTestCase
 
     public function stateMachineProvider()
     {
-        $this->state_machine_dir = $this->getExemplesDir();
+        $this->state_machine_dir = $this->getExamplesDir();
         $state_machines = [];
         foreach ($this->state_machine_dir as $dir) {
             array_push($state_machines, [
                 $dir['PATH'],
-                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine",
-                getcwd() . '/exemple/' . $dir['NAME'] . '/Workflow.yml',
+                "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine",
+                getcwd() . '/src-tests/Mothership/Examples/' . $dir['NAME'] . '/Workflow.yml',
             ]);
-            array_push($this->yamlfile, getcwd() . '/exemple/' . $dir['NAME'] . '/Workflow.yml');
+            array_push($this->yamlfile, getcwd() . '/src-tests/Mothership/Examples/' . $dir['NAME'] . '/Workflow.yml');
         }
         return $state_machines;
     }
@@ -106,8 +106,8 @@ class StateMachineTest extends StateMachineTestCase
      * @expectedException     Mothership\StateMachine\Exception\StateMachineException
      */
     public function testMethodNotImplementedException() {
-        $state_machine_class = "Exemple\\Fail\\FailStateMachine";
-        $state_machine = new $state_machine_class(getcwd() . '/exemple/Fail/Workflow.yml');
+        $state_machine_class = "Mothership\\Examples\\Fail\\FailStateMachine";
+        $state_machine = new $state_machine_class(getcwd() . '/src-tests/Mothership/Examples/Fail/Workflow.yml');
     }
 
     /**

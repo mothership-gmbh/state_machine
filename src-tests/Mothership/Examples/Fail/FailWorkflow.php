@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *
@@ -26,11 +27,24 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\Advanced;
+namespace Mothership\Examples\Fail;
 
-use Mothership\StateMachine\StateMachineAbstract;
+use Mothership\StateMachine\WorkflowAbstract;
 
-class AdvancedStateMachine extends StateMachineAbstract
+class FailWorkflow extends WorkflowAbstract
 {
+    function start()
+    {
 
+    }
+
+    function second_state()
+    {
+
+    }
+
+    function finish()
+    {
+
+    }
 }

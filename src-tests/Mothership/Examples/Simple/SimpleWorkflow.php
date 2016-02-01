@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *
@@ -26,11 +27,29 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Exemple\BooleanConditions;
+namespace Mothership\Examples\Simple;
 
-use Mothership\StateMachine\StateMachineAbstract;
+use Mothership\StateMachine\WorkflowAbstract;
 
-class BooleanConditionsStateMachine extends StateMachineAbstract
+class SimpleWorkflow extends WorkflowAbstract
 {
+    function start()
+    {
 
+    }
+
+    function second_state()
+    {
+
+    }
+
+    function third_state()
+    {
+
+    }
+
+    function finish()
+    {
+
+    }
 }
