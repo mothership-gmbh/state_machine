@@ -84,7 +84,7 @@ class WorkflowTest extends \Mothership\Tests\StateMachineTestCase
      */
     public function workflowGoodProvider()
     {
-        $this->state_machine_dir = $this->getExemplesDir();
+        $this->state_machine_dir = $this->getExamplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
             $state_machine_class = "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
