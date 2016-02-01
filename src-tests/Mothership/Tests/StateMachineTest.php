@@ -39,7 +39,7 @@ use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTest extends \Mothership\Tests\StateMachineTestCase
+class StateMachineTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];

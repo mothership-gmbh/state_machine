@@ -41,7 +41,7 @@ use Mothership\Examples\Fail\FailWorkflow;
  * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class WorkflowTest extends \Mothership\Tests\StateMachineTestCase
+class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
 {
     /**
      * @dataProvider    workflowGoodProvider
