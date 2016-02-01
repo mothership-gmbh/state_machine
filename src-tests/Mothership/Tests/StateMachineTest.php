@@ -39,7 +39,7 @@ use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTest extends \Mothership\Tests\BaseTestCase
+class StateMachineTest extends \PHPUnit_Framework_TestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];
