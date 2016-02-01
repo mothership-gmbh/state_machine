@@ -27,9 +27,9 @@
  * @link      http://www.mothership.de/
  */
 
-use Exemple\Simple\SimpleStateMachine;
-use Exemple\IfConditions\IfConditionsStateMachine;
-use Exemple\BooleanConditions\BooleanConditionsStateMachine;
+use \Mothership\Examples\Simple\SimpleStateMachine;
+use \Mothership\Examples\IfConditions\IfConditionsStateMachine;
+use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
 /**
  * Class StateMachineTest
  *
@@ -39,7 +39,7 @@ use Exemple\BooleanConditions\BooleanConditionsStateMachine;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTest extends StateMachineTestCase
+class StateMachineTest extends \Mothership\Tests\BaseTestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];
