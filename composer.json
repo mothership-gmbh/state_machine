@@ -27,12 +27,12 @@
   "autoload": {
     "psr-4": {
       "Mothership\\StateMachine\\": "src/Mothership/StateMachine/"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Mothership\\Tests\\": "src-tests/Mothership/Tests",
-        "Mothership\\Examples\\": "src-test/Examples"
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Mothership\\Tests\\": "src-tests/Mothership/Tests/",
+      "Mothership\\Examples\\": "src-test/Examples/"
     }
   }
 }
