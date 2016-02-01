@@ -31,7 +31,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Mothership\\Examples\\": "src-tests/Mothership/Examples/"
+      "Mothership\\Examples\\": "src-tests/Mothership/Examples/",
+      "Mothership\\Tests\\": "src-tests/Mothership/Tests/"
     }
   }
 }

@@ -86,10 +86,10 @@ class WorkflowTest extends StateMachineTestCase
         $this->state_machine_dir = $this->getExemplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
-            $state_machine_class = "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
+            $state_machine_class = "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
             $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
             array_push($workflow, [
-                "Exemple\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
+                "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 $this->invokeMethod($state_machine, "parseYAML"),
             ]);
         }
@@ -104,11 +104,11 @@ class WorkflowTest extends StateMachineTestCase
     {
         $workflow = [];
         array_push($workflow, [
-            "Exemple\\Simple\\SimpleWorkflow",
+            "Mothership\\Examples\\Simple\\SimpleWorkflow",
             []
         ]);
         array_push($workflow, [
-            "Exemple\\Simple\\SimpleWorkflow",
+            "Mothership\\Examples\\Simple\\SimpleWorkflow",
             ['arg1' => 1, 'args2' => 2]
         ]);
 
@@ -121,7 +121,7 @@ class WorkflowTest extends StateMachineTestCase
      */
     public function testMethodNotImplementedException()
     {
-        $workflow_class = "Exemple\\Fail\\FailWorkflow";
+        $workflow_class = "Mothership\\Examples\\Fail\\FailWorkflow";
         $workflow = new $workflow_class([
             'states' => [
                 'start' => [],

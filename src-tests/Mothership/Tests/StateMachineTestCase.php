@@ -19,46 +19,49 @@
  * needs please refer to http://www.mothership.de for more information.
  *
  * @category  Mothership
- * @package   Mothership_state_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright Copyright (c) 2016 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
-use Mothership\Tests\BaseTestCase;
+
+namespace Mothership\Tests;
+
 /**
  * StateMachineTestCase
  *
  * @category  Mothership
  * @package   Mothership_State_machine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTestCase extends BaseTestCase
+class StateMachineTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected $exempleDir = '/exemple';
+    protected $exampleDir = '/src-tests/Mothership/Examples';
     protected $excludeDir = ['Fail'];
 
-
     /**
-     * Return all the directories containing exemples
+     * Return all the directories containing examples
+     *
      * @return array
      */
-    protected function getExemplesDir()
+    protected function getExamplesDir()
     {
-        $objects = scandir(getcwd() . $this->exempleDir);
+        $objects = scandir(getcwd() . $this->exampleDir);
         $dir = [];
         foreach ($objects as $object) {
-            if ($object != '.' && $object != '..' && is_dir(getcwd() . '/' . $this->exempleDir . '/' . $object)) {
+            if ($object != '.' && $object != '..' && is_dir(getcwd() . '/' . $this->exampleDir . '/' . $object)) {
                 foreach($this->excludeDir as $exclude)  {
                     if($exclude!=$object)   {
-                        array_push($dir, ['PATH' => getcwd() . '/' . $this->exempleDir . '/' . $object . '/', 'NAME' => $object]);
+                        array_push($dir, ['PATH' => getcwd() . '/' . $this->exampleDir . '/' . $object . '/', 'NAME' => $object]);
                     }
                 }
             }
         }
         return $dir;
     }
-
 }

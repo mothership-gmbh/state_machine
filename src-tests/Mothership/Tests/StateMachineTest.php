@@ -39,7 +39,7 @@ use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
  * @copyright 2015 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class StateMachineTest extends \PHPUnit_Framework_TestCase
+class StateMachineTest extends \Mothership\Tests\StateMachineTestCase
 {
     protected $state_machine_dir;
     protected $yamlfile = [];
@@ -69,7 +69,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     public function stateMachineProvider()
     {
-        $this->state_machine_dir = $this->getExemplesDir();
+        $this->state_machine_dir = $this->getExamplesDir();
         $state_machines = [];
         foreach ($this->state_machine_dir as $dir) {
             array_push($state_machines, [
