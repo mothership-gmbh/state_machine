@@ -31,10 +31,5 @@
       "src/Tests/",
       "src/Examples/"
     ]
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "v.1.0.1"
-    }
   }
 }
