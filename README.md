@@ -1,4 +1,7 @@
-Mothership\StateMachine ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
+PHP State Machine / FSM / Acceptance Automata
+
+![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)
+![](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16/badge.svg?style=flat)
 -----------------------------------------
 A PHP based state machine implementation.
 
