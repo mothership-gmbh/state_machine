@@ -25,13 +25,16 @@
   },
   "autoload": {
     "psr-4": {
-      "Mothership\\StateMachine\\": "src/Mothership/StateMachine/"
+      "Mothership\\StateMachine\\": "src/",
+      "exclude-from-classmap": [
+        "src/Tests/",
+        "src/Examples"
+      ]
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Mothership\\Examples\\": "src-tests/Mothership/Examples/",
-      "Mothership\\Tests\\StateMachine\\": "src-tests/Mothership/Tests/"
+  "extra": {
+    "branch-alias": {
+      "dev-master": "v.1.0.0"
     }
   }
 }
