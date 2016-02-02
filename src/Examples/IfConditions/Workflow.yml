@@ -1,6 +1,6 @@
 #class of the model
 class:
-  name: Mothership\Examples\IfConditions\IfConditionsWorkflow
+  name: Mothership\StateMachine\Examples\IfConditions\IfConditionsWorkflow
   args: []
 
 #definition of the states and transition...the order establishes the transition from one state to another

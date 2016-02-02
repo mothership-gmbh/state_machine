@@ -15,9 +15,11 @@
         >
     <testsuites>
         <testsuite name="statemachine">
-            <directory>./src-tests/</directory>
+            <directory>./src/Tests/</directory>
         </testsuite>
     </testsuites>
+
+
     <filter>
         <blacklist>
             <file>src/Mothership/StateMachine/Exception/StateMachineException.php</file>

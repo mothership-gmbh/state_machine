@@ -27,7 +27,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Examples\BooleanConditions;
+namespace Mothership\StateMachine\Examples\BooleanConditions;
 
 use Mothership\StateMachine\WorkflowAbstract;
 

@@ -26,7 +26,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Examples\IfConditions;
+namespace Mothership\StateMachine\Examples\IfConditions;
 
 use Mothership\StateMachine\StateMachineAbstract;
 

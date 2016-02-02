@@ -12,6 +12,13 @@ For more informations visit the [website](http://mothership-gmbh.github.io/state
     
   ![](https://github.com/mothership-gmbh/state_machine/blob/develop/exemple/BooleanConditions/workflow.png)
 
+#Tests
+You can run the unit tests with the following command:
+
+    $ cd path/to/Mothership/Component/StateMachine/ #check your path
+    $ composer install
+	$ vendor/phpunit/phpunit/phpunit --config=phpunit.xml.dist
+
 #Installation
 Using composer add for the last tagged version:
 ```

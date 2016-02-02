@@ -1,6 +1,6 @@
 #class of the model
 class:
-  name: Mothership\Examples\Fail\FailWorkflow
+  name: Mothership\StateMachine\Examples\Fail\FailWorkflow
   args: []
 
 #definition of the states and transition...the order establishes the transition from one state to another

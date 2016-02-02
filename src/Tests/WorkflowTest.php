@@ -19,29 +19,34 @@
  * needs please refer to http://www.mothership.de for more information.
  *
  * @category  Mothership
- * @package   Mothership_state_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright Copyright (c) 2016 Mothership GmbH
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.mothership.de/
  */
+
+namespace Mothership\StateMachine\Tests;
+
 use Symfony\Component\Yaml\Yaml;
 
-use Mothership\Examples\Simple\SimpleWorkflow;
-use Mothership\Examples\IfConditions\IfConditionsWorkflow;
-use Mothership\Examples\Fail\FailStateMachine;
-use Mothership\Examples\Fail\FailWorkflow;
+use Mothership\StateMachine\Examples\Simple\SimpleWorkflow;
+use Mothership\StateMachine\Examples\IfConditions\IfConditionsWorkflow;
+use Mothership\StateMachine\Examples\Fail\FailStateMachine;
+use Mothership\StateMachine\Examples\Fail\FailWorkflow;
+
 /**
  * WorkflowTest
  *
  * @category  Mothership
- * @package   Mothership_State_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @author    Don Bosco van Hoi <vanhoi@mothership.de>
  * @copyright 2016 Mothership GmbH
  * @link      http://www.mothership.de/
  */
-class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
+class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
 {
     /**
      * @dataProvider    workflowGoodProvider
@@ -68,7 +73,6 @@ class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
         $this->assertTrue($workflow->run());
     }
 
-
     /**
      * @dataProvider workflowFailProvider
      * @expectedException     Mothership\StateMachine\Exception\WorkflowException
@@ -87,10 +91,10 @@ class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
         $this->state_machine_dir = $this->getExamplesDir();
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
-            $state_machine_class = "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
+            $state_machine_class = "Mothership\\StateMachine\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
             $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
             array_push($workflow, [
-                "Mothership\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
+                "Mothership\\StateMachine\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 $this->invokeMethod($state_machine, "parseYAML"),
             ]);
         }
@@ -105,11 +109,11 @@ class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
     {
         $workflow = [];
         array_push($workflow, [
-            "Mothership\\Examples\\Simple\\SimpleWorkflow",
+            "Mothership\\StateMachine\\Examples\\Simple\\SimpleWorkflow",
             []
         ]);
         array_push($workflow, [
-            "Mothership\\Examples\\Simple\\SimpleWorkflow",
+            "Mothership\\StateMachine\\Examples\\Simple\\SimpleWorkflow",
             ['arg1' => 1, 'args2' => 2]
         ]);
 
@@ -122,7 +126,7 @@ class WorkflowTest extends \Mothership\Tests\StateMachine\StateMachineTestCase
      */
     public function testMethodNotImplementedException()
     {
-        $workflow_class = "Mothership\\Examples\\Fail\\FailWorkflow";
+        $workflow_class = "Mothership\\StateMachine\\Examples\\Fail\\FailWorkflow";
         $workflow = new $workflow_class([
             'states' => [
                 'start' => [],

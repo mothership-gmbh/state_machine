@@ -25,12 +25,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Mothership\\StateMachine\\": "src/",
-      "exclude-from-classmap": [
-        "src/Tests/",
-        "src/Examples"
-      ]
-    }
+      "Mothership\\StateMachine\\": "src/"
+    },
+    "exclude-from-classmap": [
+      "src/Tests/",
+      "src/Examples/"
+    ]
   },
   "extra": {
     "branch-alias": {

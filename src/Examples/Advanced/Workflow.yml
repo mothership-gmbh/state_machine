@@ -1,6 +1,6 @@
 #class of the model
 class:
-  name: Mothership\Examples\Advanced\AdvancedWorkflow
+  name: Mothership\StateMachine\Examples\Advanced\AdvancedWorkflow
   args: []
 
 #definition of the states and transition...the order establishes the transition from one state to another
