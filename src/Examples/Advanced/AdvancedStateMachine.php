@@ -26,7 +26,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Examples\Advanced;
+namespace Mothership\StateMachine\Examples\Advanced;
 
 use Mothership\StateMachine\StateMachineAbstract;
 

@@ -27,7 +27,7 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Examples\Fail;
+namespace Mothership\StateMachine\Examples\Fail;
 
 use Mothership\StateMachine\WorkflowAbstract;
 

@@ -27,13 +27,13 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\Tests\StateMachine;
+namespace Mothership\StateMachine\Tests;
 
 /**
  * StateMachineTestCase
  *
  * @category  Mothership
- * @package   Mothership_State_machine
+ * @package   Mothership_StateMachine
  * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @author    Don Bosco van Hoi <vanhoi@mothership.de>
  * @copyright 2016 Mothership GmbH
@@ -41,9 +41,16 @@ namespace Mothership\Tests\StateMachine;
  */
 class StateMachineTestCase extends \PHPUnit_Framework_TestCase
 {
+    // should be \Mothership\Base\Tests\Trait
     use \Mothership\Tests\TraitBase;
 
-    protected $exampleDir = '/src-tests/Mothership/Examples';
+    /**
+     * The directory with all examples
+     *
+     * @var string
+     */
+    protected $exampleDir = '/src/Examples';
+
     protected $excludeDir = ['Fail'];
 
     /**
