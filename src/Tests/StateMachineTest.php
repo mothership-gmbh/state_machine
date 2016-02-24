@@ -137,5 +137,12 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
             "workflow"));
     }
 
+    /**
+     * @group finish
+     */
+    public function reachedFinal()
+    {
+
+    }
 }
 

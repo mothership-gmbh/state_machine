@@ -156,7 +156,7 @@ class Status implements StatusInterface
 
     /**
      * @param $transition_name
-     * @param \Mothership\StateMachine\StatusInterface $current_status
+     * @param \Mothership\StateMachine\Status $current_status
      *
      * @return bool
      *

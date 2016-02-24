@@ -47,6 +47,10 @@ abstract class StateMachineAbstract implements StateMachineInterface
      */
     protected $workflow_file;
     protected $workflow_array;
+
+    /**
+     * @var \Mothership\StateMachine\WorkflowAbstract
+     */
     protected $workflow;
 
     /**
@@ -193,6 +197,11 @@ abstract class StateMachineAbstract implements StateMachineInterface
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Error running State Machine", 100, $ex);
         }
+    }
+
+    public function acceptance($states)
+    {
+        $this->workflow->acceptance($states);
     }
 
     /**

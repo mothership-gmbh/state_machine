@@ -231,45 +231,85 @@ abstract class WorkflowAbstract implements WorkflowInterface
         throw new WorkflowException("No status found with the name " . $name, 70, null);
     }
 
-    /**
-     * execute the workflow
-     *
-     * @param mixed $args Optional arguments
-     *
-     * @return bool
-     */
-    public function run(array $args = [])
-    {
-        $states_count = count($this->states);
-        for ($i = 1; $i < $states_count; $i++) {
-            $transitions = $this->states[$i]->getTransitions();
+    protected $log;
 
-            /* @var \Mothership\StateMachine\Transition $_transition */
-            foreach ($transitions as $_transition) {
-                try {
-                    $status = $this->executeTransition($_transition->getName());
-                    if ($status !== false) {
-                        $this->current_status = $status;
-                        $changeStatus         = $this->checkIfPreviousTransition($status);
-                        if ($changeStatus !== false) {
-                            $i = $this->getStatusIndex($changeStatus);
-                            break;
-                        }
-                    }
-                } catch (TransitionException $ex) {
-                    new WorkflowException("Error during workflow->run()", 100, $ex, $this->output);
-                } catch (WorkflowException $ex) {
-                    new WorkflowException("Error during workflow->run()", 100, $ex, $this->output);
-                } catch (StateException $ex) {
-                    if ($this->current_status->hasInternalState()) {
-                        $i = 1;
-                        break;
-                    }
-                }
-            }
+    protected function log($state, $return = null)
+    {
+        $data['name'] = $state;
+
+        if ($state == 'do_it_again') {
+            $t = '';
         }
 
-        return true;
+        if (null !== $return) {
+            $data['return'] = (bool) $return;
+        }
+        $this->log[] = $data;
+    }
+
+    /**
+     *
+     * @throws \Exception
+     */
+    public function run($report = false)
+    {
+        $nextState = $this->current_status->getName();
+
+        $continueExecution = true;
+
+        // execute the current workflow
+        while (true === $continueExecution) {
+
+
+            if ($nextState == 'finish') {
+                $continueExecution = false;
+            }
+
+            // condition is the return value of a method
+            $condition = call_user_func_array([$this, $nextState], []);
+
+            //
+            $this->log($nextState, $condition);
+
+            /**
+             * Skip the previous execution if the previous execution
+             * is finished
+             */
+            if (false === $continueExecution) continue;
+
+            $nextState = $this->getNextStateFrom($nextState, $condition);
+        }
+
+        $this->acceptance($this->log);
+    }
+
+    /**
+     * Check if the current automata can run in a given order
+     *
+     * @param array $states
+     *
+     */
+    public function acceptance(array $states = [])
+    {
+        if (count($states) < 2) {
+            throw new \Exception('Automata needs at least two states');
+        }
+
+        foreach ($states as $index => $state) {
+
+            $condition = (array_key_exists('return', $state)) ? $state['return'] : null;
+
+            if ($index + 1 == count($states) || $state['name'] == 'finish') continue;
+
+            $nextState = $this->getNextStateFrom($state['name'], $condition);
+
+            $message = sprintf("δ: (C × Z[%d] → Z[%d) = [%s] x [%s] → [%s] ", $this->getStatusIndex($state['name']), $this->getStatusIndex($states[$index + 1]['name']), var_export($condition, true), $state['name'], $states[$index + 1]['name']);
+            if ($nextState !== $states[$index + 1]['name']) {
+                throw new \Exception('Error. Invalid transitions. Last transition: ' . $message);
+            } else {
+                echo "\n" . $message;
+            }
+        }
     }
 
     /**
@@ -284,30 +324,42 @@ abstract class WorkflowAbstract implements WorkflowInterface
         $status_count = count($this->states);
         for ($i = 0; $i < $status_count; $i++) {
             if ($this->states[$i]->getName() == $statusname) {
-                return $i - 1;
+                return $i;
             }
         }
     }
 
     /**
-     * Check if there is a previous transition that could be executed from $status
-     *
-     * @param \Mothership\StateMachine\StatusInterface $status
-     *
-     * @return bool|string false or the name of the status to execute
+     * Iterates all nodes
      */
-    private function checkIfPreviousTransition(StatusInterface $status)
+    protected function getNextStateFrom($currentTransition, $condition = null)
     {
-        $lastIndex = $this->getStatusIndex($status->getName());
-        for ($i = 0; $i < $lastIndex; $i++) {
-            $transictions = $this->states[$i]->getTransitions();
-            foreach ($transictions as $t) {
-                if ($t->getTransitionFrom() == $status->getName()) {
-                    return $this->states[$i]->getName();
+        $possibleTransition = null;
+        foreach ($this->states as $statusIndex => $status) {
+
+            if (empty($status->getTransitions())) {
+                continue;
+            }
+            foreach ($status->getTransitions() as $transition) {
+
+                // FIX transiction from
+                if ($currentTransition == $transition->getTransitionFrom()) {
+
+                    /**
+                     * If the next expected transition depends on a condition,
+                     * we need to check, if the condition is also set
+                     */
+                    if (true === $transition->hasCondition() && $condition == $transition->getCondition()) {
+                        return $transition->getName();
+                    }
+
+                    if (false === $transition->hasCondition()) {
+                        return $transition->getName();
+                    }
                 }
             }
         }
-
-        return false;
+        $error = "\nδ: (X × Z → Z) ". sprintf("[%s] x [%s] → [%s] ", $condition, $currentTransition, 'NULL');
+        throw new TransitionException($error);
     }
 }

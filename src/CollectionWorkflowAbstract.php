@@ -105,6 +105,7 @@ abstract class CollectionWorkflowAbstract extends WorkflowAbstract
      */
     public function has_more()
     {
+        echo "\nhasMore";
         if ($this->_pointer + 1 == count($this->_collection)) {
             return false;
         }
