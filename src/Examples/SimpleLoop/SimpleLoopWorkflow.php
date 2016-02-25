@@ -51,7 +51,9 @@ class SimpleLoopWorkflow extends CollectionWorkflowAbstract
 
     function process_items()
     {
-        echo "\nProcessing: " . $this->_collection[$this->_pointer];
+        echo "\nProcesssing: " . $this->_collection[$this->_pointer];
+
+        return (bool) rand(0, 1);
     }
 
     function do_it_again()

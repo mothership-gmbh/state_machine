@@ -260,7 +260,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
         // execute the current workflow
         while (true === $continueExecution) {
 
-
+            // it is better to work with StatusInterface::TYPE_FINAL
             if ($nextState == 'finish') {
                 $continueExecution = false;
             }
@@ -272,14 +272,17 @@ abstract class WorkflowAbstract implements WorkflowInterface
             $this->log($nextState, $condition);
 
             /**
-             * Skip the previous execution if the previous execution
-             * is finished
+             * Mark the execution to be stopped when the next state
+             * is StatusInterface::TYPE_FINAL.
              */
             if (false === $continueExecution) continue;
 
             $nextState = $this->getNextStateFrom($nextState, $condition);
         }
 
+        /**
+         * Just a little nead function to use the state machine as an acceptance automata
+         */
         $this->acceptance($this->log);
     }
 

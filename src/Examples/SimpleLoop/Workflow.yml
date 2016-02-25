@@ -17,12 +17,12 @@ states:
 
   process_items:
     type: normal
-    transitions_from:   [prepare_collection, {status:  has_more, result:  true}]
+    transitions_from:   [prepare_collection, {status:  has_more, result:  true}, {status:  process_items, result:  true}]
     transitions_to:     [process_items]
 
   has_more:
     type: normal
-    transitions_from:   [process_items]
+    transitions_from:   [{status:  process_items, result:  false}]
     transitions_to:     [has_more]
 
   do_it_again:
