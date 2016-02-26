@@ -35,7 +35,7 @@ class SimpleWorkflow extends WorkflowAbstract
 {
     function start()
     {
-
+        return 'huhu';
     }
 
     function second_state()

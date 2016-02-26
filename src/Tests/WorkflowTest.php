@@ -1,32 +1,10 @@
 <?php
 /**
- * Mothership GmbH
+ * This file is part of the Mothership GmbH code.
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to office@mothership.de so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.mothership.de for more information.
- *
- * @category  Mothership
- * @package   Mothership_StateMachine
- * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @author    Don Bosco van Hoi <vanhoi@mothership.de>
- * @copyright Copyright (c) 2016 Mothership GmbH
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.mothership.de/
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-
 namespace Mothership\StateMachine\Tests;
 
 use Symfony\Component\Yaml\Yaml;
@@ -172,8 +150,10 @@ class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
                     'name' => 'finish',
                 ),
         );
-        //$workflow->acceptance($test);
+        $workflow->acceptance($test);
     }
+
+    //public function stateMachineHaveFinalState
 
     /**
      * @dataProvider    workflowGoodProvider
@@ -213,7 +193,7 @@ class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
      * Good provider for instantiate a workflow
      * @return array
      */
-    public function workflowGoodProvidser()
+    public function workflowGoodProvider()
     {
         $this->state_machine_dir = $this->getExamplesDir();
         $workflow = [];
@@ -264,13 +244,45 @@ class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
         ]);
     }
 
+
     /**
-     * @dataProvider    workflowGoodProvider
+     * @test
+     *
+     * @group Motherships
+     * @group Motherships_StateMachine
+     * @group Motherships_StateMachine_Workflow
+     * @group Motherships_StateMachine_Workflow_1
+     *
+     * @dataProvider stateMachineProvider
+     */
+    public function testMethodNotImplementesdException()
+    {
+        $workflow_class = "Mothership\\StateMachine\\Examples\\Fail\\FailWorkflow";
+        $workflow = new $workflow_class([
+            'states' => [
+                'start' => [],
+                'second_state' => [],
+                'third' => [],
+                'final' => []
+            ]
+        ]);
+    }
+
+
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_Workflow
+     * @group Mothership_StateMachine_Workflow_2
+     *
+     * @dataProvider workflowGoodProvider
      */
     public function testVars($worklowClass, $arguments)
     {
         $workflow = new $worklowClass($arguments);
-        $vars = $this->getPropertyValue($workflow, "vars");
+        $vars = $this->getPropertyValue($workflow, 'vars');
         $this->assertArrayHasKey('states', $vars);
         $this->assertArrayHasKey('class', $vars);
         $this->assertArrayHasKey('args', $vars['class']);

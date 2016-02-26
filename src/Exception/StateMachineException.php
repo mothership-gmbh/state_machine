@@ -1,45 +1,23 @@
 <?php
-
+/**
+ * This file is part of the Mothership GmbH code.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Mothership\StateMachine\Exception;
 
-/**
- * Mothership GmbH
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to office@mothership.de so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.mothership.de for more information.
- *
- * @category  Mothership
- * @package   Mothership_state_machine
- * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.mothership.de/
- */
 use Mothership\Exception\ExceptionAbstract;
+
 /**
- * Class StateMachineException
+ * Class StateMachineException.
  *
- * @category  Mothership
- * @package   Mothership_State_machine
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @copyright 2016 Mothership GmbH
+ *
  * @link      http://www.mothership.de/
  */
 class StateMachineException extends ExceptionAbstract
 {
-
 }
-

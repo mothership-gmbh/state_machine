@@ -14,10 +14,10 @@
     }
   ],
   "require": {
-    "php": ">=5.5",
-    "symfony/console": "2.7.*",
+    "php": ">=5.4",
+    "symfony/console": "2.7.0",
     "symfony/yaml": "^2.7",
-    "mothership/component_base": ">=v1.0 <2.0"
+    "mothership/component_base": "1.1.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.8",
@@ -31,5 +31,8 @@
       "src/Tests/",
       "src/Examples/"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": { "Mothership\\StateMachine\\Examples\\": "src/Examples" }
   }
 }

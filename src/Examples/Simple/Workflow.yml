@@ -20,3 +20,19 @@ states:
     type: final
     transitions_from:  [third_state]
     transitions_to:  [finish]
+
+test:
+  fail:
+    0:
+      - [start]
+      - [third_state]
+    1:
+      - [start]
+      - [finish]
+
+  run:
+    0:
+      - [start]
+      - [second_state]
+      - [third_state]
+      - [finish]

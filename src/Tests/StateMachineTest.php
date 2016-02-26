@@ -1,42 +1,21 @@
 <?php
-
 /**
- * Mothership GmbH
+ * This file is part of the Mothership GmbH code.
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to office@mothership.de so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.mothership.de for more information.
- *
- * @category  Mothership
- * @package   Mothership_state_machine
- * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright Copyright (c) 2015 Mothership GmbH
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.mothership.de/
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+namespace Mothership\StateMachine\Tests;
 
-use \Mothership\Examples\Simple\SimpleStateMachine;
-use \Mothership\Examples\IfConditions\IfConditionsStateMachine;
-use \Mothership\Examples\BooleanConditions\BooleanConditionsStateMachine;
+use Mothership\StateMachine\StatusInterface;
+
 /**
- * Class StateMachineTest
+ * Class StateMachineTest.
  *
- * @category  Mothership
- * @package   Mothership_State_machine
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
  * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @copyright 2015 Mothership GmbH
+ * @copyright 2016 Mothership GmbH
+ *
  * @link      http://www.mothership.de/
  */
 class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
@@ -44,60 +23,64 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     protected $state_machine_dir;
 
     /**
-     * The yaml file
+     * The yaml file.
      *
      * @var array
      */
     protected $yamlfile = [];
 
-    protected $statemachine_test;
-
     /**
-     * @dataProvider stateMachineProvider
-     */
-    public function testCreation($dir, $class, $yml)
-    {
-        $state_machine = new $class($yml);
-        $this->isInstanceOf($class, $state_machine);
-        $this->assertTrue($state_machine->run());
-    }
-
-    /**
+     * A workflow defines a set of mandatory methods. If the methods are not present,
+     * then throw an exception.
+     *
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_0
+     *
      * @dataProvider stateMachineProvider
      */
     public function testRenderGraph($dir, $class, $yml)
     {
-        $path = $dir . 'workflow.png';
+        $path = '/tmp/workflow.png';
         $state_machine = new $class($yml);
         $state_machine->renderGraph($path, false);
         $this->assertTrue(file_exists($path));
     }
 
     /**
-     *
-     *
      * @return array
      */
     public function stateMachineProvider()
     {
         $this->state_machine_dir = $this->getExamplesDir();
-        $state_machines          = [];
+        $state_machines = [];
         foreach ($this->state_machine_dir as $dir) {
             array_push(
                 $state_machines,
                 [
                     $dir['PATH'],
-                    "Mothership\\StateMachine\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine",
-                    getcwd() . '/src/Examples/' . $dir['NAME'] . '/Workflow.yml',
+                    'Mothership\\StateMachine\\Examples\\'.$dir['NAME'].'\\'.$dir['NAME'].'StateMachine',
+                    getcwd().'/src/Examples/'.$dir['NAME'].'/Workflow.yml',
                 ]
             );
-            array_push($this->yamlfile, getcwd() . '/src/Examples/' . $dir['NAME'] . '/Workflow.yml');
+            array_push($this->yamlfile, getcwd().'/src/Examples/'.$dir['NAME'].'/Workflow.yml');
         }
 
         return $state_machines;
     }
 
     /**
+     * A workflow defines a set of mandatory methods. If the methods are not present,
+     * then throw an exception.
+     *
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_0
+     *
      * @dataProvider stateMachineProvider
      */
     public function testParseYAML($dir, $class, $yml)
@@ -118,31 +101,181 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     }
 
     /**
-     * @expectedException     Mothership\StateMachine\Exception\StateMachineException
+     * A workflow defines a set of mandatory methods. If the methods are not present,
+     * then throw an exception.
+     *
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_0
+     *
+     * @expectedException        \Mothership\StateMachine\Exception\StateMachineException
+     * @expectedExceptionMessage This methods are not implemented in the workflow
      */
-    public function testMethodNotImplementedException() {
-        $state_machine_class = "Mothership\\StateMachine\\Examples\\Fail\\FailStateMachine";
-        $state_machine = new $state_machine_class(getcwd() . '/tests/Mothership/Examples/Fail/Workflow.yml');
+    public function testMethodNotImplementedException()
+    {
+        $workflow = getcwd().'/src/Examples/Fail/Workflow.yml';
+        new \Mothership\StateMachine\Examples\Fail\FailStateMachine($workflow);
     }
 
     /**
+     * The class name of the workflow must be defined. If the class does not exist, then throw an error.
+     *
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_1
+     *
+     * @expectedException        \Mothership\StateMachine\Exception\StateMachineException
+     * @expectedExceptionMessage
+     */
+    public function noWorkflowFilePresent()
+    {
+        new \Mothership\StateMachine\StateMachine(null, new \Symfony\Component\Console\Output\ConsoleOutput());
+    }
+
+    /**
+     * The class name of the workflow must be defined. If the class does not exist, then throw an error.
+     *
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_2
+     *
+     * @expectedException        \Mothership\StateMachine\Exception\StateMachineException
+     * @expectedExceptionMessage The class Idontexist does not exist!
+     */
+    public function workflowInitializationFailed()
+    {
+        $invalidWorkflow = $this->getDir().'/src/Tests/Fixtures/Workflows/InvalidWorkflowClass.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine->run();
+    }
+
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_3
+     *
      * @dataProvider stateMachineProvider
      */
-    public function testInitWorkflow($dir, $class, $yml)
+    public function hinitializationWorks($dir, $class, $yml)
     {
-        $state_machine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
-        $yaml_array = $this->invokeMethod($state_machine, 'parseYAML');
-        $this->invokeMethod($state_machine, "initWorkflow");
-        $this->assertEquals($yaml_array['class']['name'], $this->getPropertyClass($state_machine,
-            "workflow"));
+        fwrite(STDERR, sprintf("\nCurrent workflow: %s", $class));
+
+        $stateMachine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $this->assertTrue($stateMachine->getWorkflow() instanceof \Mothership\StateMachine\WorkflowAbstract);
     }
 
     /**
-     * @group finish
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_4
+     *
+     * @dataProvider stateMachineProvider
      */
-    public function reachedFinal()
+    public function hasWorkflowAfterInitialization($dir, $class, $yml)
     {
+        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine->run();
+    }
 
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_5
+     *
+     * @dataProvider stateMachineProvider
+     */
+    public function stateMachineWillReachFinalState()
+    {
+        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine->run();
+        $currentState = $stateMachine->getWorkflow()->getCurrentStatus();
+        $this->assertTrue($currentState->getType() === StatusInterface::TYPE_FINAL);
+    }
+
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_6
+     *
+     * @dataProvider stateMachineProvider
+     */
+    public function logIsEnabledAndReturnsValues()
+    {
+        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
+        $log = $stateMachine->getWorkflow()->getLog();
+        $this->assertTrue(is_array($log));
+
+        /*
+         * By convention, the first state is called 'start' and the last one 'finish'. By
+         * checking for this value, you can be sure, that the log contains valid values
+         */
+        $this->assertEquals('start', $log[0]['name']);
+        $this->assertEquals('finish', end($log)['name']);
+    }
+
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_7
+     *
+     * @dataProvider stateMachineProvider
+     */
+    public function acceptanceTestWillNotFail()
+    {
+        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
+        $log = $stateMachine->getWorkflow()->getLog();
+
+        $stateMachine->getWorkflow()->acceptance($log);
+    }
+
+    /**
+     * @test
+     *
+     * @group Mothership
+     * @group Mothership_StateMachine
+     * @group Mothership_StateMachine_8
+     *
+     * @dataProvider stateMachineProvider
+     */
+    public function injectArguments()
+    {
+        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
+        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+
+        // Inject random values
+        $maxKeys = rand(5, 10);
+        $args = [];
+        for ($i = 0; $i <= $maxKeys; ++$i) {
+            $args[uniqid($i)] = uniqid();
+        }
+
+        $stateMachine->run($args);
+        $this->assertEquals($args, $stateMachine->getWorkflow()->getArgs());
+
+        foreach ($args as $key => $value) {
+            $this->assertEquals($value, $stateMachine->getWorkflow()->getArgs($key));
+        }
     }
 }
-
