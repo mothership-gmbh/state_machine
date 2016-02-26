@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "symfony/console": "2.7.0",
+    "symfony/console": "2.7.*",
     "symfony/yaml": "^2.7",
     "mothership/component_base": "1.1.*"
   },
