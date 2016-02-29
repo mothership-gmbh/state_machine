@@ -21,21 +21,17 @@
 
 
     <filter>
+
         <blacklist>
-            <file>src/Mothership/StateMachine/Exception/StateMachineException.php</file>
-            <file>src/Mothership/StateMachine/Exception/StatusException.php</file>
-            <file>src/Mothership/StateMachine/Exception/TransitionException.php</file>
-            <file>src/Mothership/StateMachine/Exception/WorkflowException.php</file>
-            <file>src/Mothership/StateMachine/WorkflowInterface.php</file>
-            <file>src/Mothership/StateMachine/TransitionInterface.php</file>
-            <file>src/Mothership/StateMachine/StatusInterface.php</file>
-            <file>src/Mothership/StateMachine/StateMachineInterface.php</file>
+            <file>vendor</file>
         </blacklist>
+
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <file>src/Mothership/StateMachine/StateMachineAbstract.php</file>
-            <file>src/Mothership/StateMachine/Status.php</file>
-            <file>src/Mothership/StateMachine/Transition.php</file>
-            <file>src/Mothership/StateMachine/WorkflowAbstract.php</file>
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory suffix=".php">vendor</directory>
+                <directory suffix=".php">src/Tests</directory>
+            </exclude>
         </whitelist>
 
     </filter>

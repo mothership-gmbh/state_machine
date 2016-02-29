@@ -368,7 +368,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                      * If the next expected transition depends on a condition,
                      * we need to check, if the condition is also set
                      */
-                    if (true === $transition->hasCondition() && $condition == $transition->getCondition()) {
+                    if (true === $transition->hasCondition() && $condition === $transition->getCondition()) {
                         return $transition->getStatus();
                     }
 

@@ -183,8 +183,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function hasWorkflowAfterInitialization($dir, $class, $yml)
     {
-        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run();
     }
 
@@ -197,10 +196,9 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      *
      * @dataProvider stateMachineProvider
      */
-    public function stateMachineWillReachFinalState()
+    public function stateMachineWillReachFinalState($dir, $class, $yml)
     {
-        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run();
         $currentState = $stateMachine->getWorkflow()->getCurrentStatus();
         $this->assertTrue($currentState->getType() === StatusInterface::TYPE_FINAL);
@@ -215,10 +213,10 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      *
      * @dataProvider stateMachineProvider
      */
-    public function logIsEnabledAndReturnsValues()
+    public function logIsEnabledAndReturnsValues($dir, $class, $yml)
     {
         $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
         $log = $stateMachine->getWorkflow()->getLog();
         $this->assertTrue(is_array($log));
@@ -240,10 +238,10 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      *
      * @dataProvider stateMachineProvider
      */
-    public function acceptanceTestWillNotFail()
+    public function acceptanceTestWillNotFail($dir, $class, $yml)
     {
         $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
         $log = $stateMachine->getWorkflow()->getLog();
 
@@ -259,10 +257,10 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      *
      * @dataProvider stateMachineProvider
      */
-    public function injectArguments()
+    public function injectArguments($dir, $class, $yml)
     {
         $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
 
         // Inject random values
         $maxKeys = rand(5, 10);
