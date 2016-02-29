@@ -1,0 +1,13 @@
+class:
+  name: Idontexist
+  args: []
+
+states:
+
+  start:
+    type: initial
+
+  finish:
+    type: final
+    transitions_from:  [start]
+    transitions_to:  [finish]

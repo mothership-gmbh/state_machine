@@ -34,6 +34,9 @@ class AdvancedWorkflow extends WorkflowAbstract
     protected $_collection = [];
     protected $_pointer    = 0;
 
+    function start()
+    {}
+
     function second_state()
     {
 

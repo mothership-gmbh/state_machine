@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magento
  *
@@ -27,29 +26,11 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\StateMachine\Examples\Simple;
+namespace Mothership\StateMachine\Examples\SimpleLoop;
 
-use Mothership\StateMachine\WorkflowAbstract;
+use Mothership\StateMachine\StateMachineAbstract;
 
-class SimpleWorkflow extends WorkflowAbstract
+class SimpleLoopStateMachine extends StateMachineAbstract
 {
-    function start()
-    {
-        return 'huhu';
-    }
 
-    function second_state()
-    {
-
-    }
-
-    function third_state()
-    {
-
-    }
-
-    function finish()
-    {
-
-    }
 }

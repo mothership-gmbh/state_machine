@@ -1,4 +1,5 @@
 PHP State Machine / FSM / Acceptance Automata
+------------------------------------------------------
 
 ![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master) [![Summary](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16?child=summary) [![Latest Stable Version](https://poser.pugx.org/mothership/state_machine/v/stable)](https://packagist.org/packages/mothership/state_machine) [![Total Downloads](https://poser.pugx.org/mothership/state_machine/downloads)](https://packagist.org/packages/mothership/state_machine) [![Latest Unstable Version](https://poser.pugx.org/mothership/state_machine/v/unstable)](https://packagist.org/packages/mothership/state_machine) [![License](https://poser.pugx.org/mothership/state_machine/license)](https://packagist.org/packages/mothership/state_machine)
 -----------------------------------------

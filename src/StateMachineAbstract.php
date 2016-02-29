@@ -1,43 +1,23 @@
 <?php
-namespace Mothership\StateMachine;
 /**
- * Mothership GmbH
+ * This file is part of the Mothership GmbH code.
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to office@mothership.de so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.mothership.de for more information.
- *
- * @category  Mothership
- * @package   Mothership_StateMachine
- * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @author    Don Bosco van Hoi <vanhoi@mothership.de>
- * @copyright Copyright (c) 2016 Mothership GmbH
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.mothership.de/
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+namespace Mothership\StateMachine;
+
 use Mothership\StateMachine\Exception\StateMachineException;
 use Mothership\StateMachine\Exception\WorkflowException;
 use Symfony\Component\Yaml\Yaml;
+
 /**
- * Class StateMachineAbstract
+ * Class AbstractMagentoCommand.
  *
- * @category  Mothership
- * @package   Mothership_StateMachine
- * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @copyright 2016 Mothership GmbH
+ *
  * @link      http://www.mothership.de/
  */
 abstract class StateMachineAbstract implements StateMachineInterface
@@ -45,8 +25,13 @@ abstract class StateMachineAbstract implements StateMachineInterface
     /**
      * @var null|string
      */
-    protected $workflow_file;
+    protected $workflowFile = null;
+
     protected $workflow_array;
+
+    /**
+     * @var \Mothership\StateMachine\WorkflowAbstract
+     */
     protected $workflow;
 
     /**
@@ -56,20 +41,20 @@ abstract class StateMachineAbstract implements StateMachineInterface
      */
     public function __construct($file = null)
     {
-        $this->workflow_file = $file;
-        if (!file_exists($this->workflow_file) || is_null($file)) {
-            throw new StateMachineException("File " . $this->workflow_file . "  doesn't exist or null, you
-            must provide an existing workflow YAML file",
-                100, null);
+        $this->workflowFile = $file;
+        if (!file_exists($this->workflowFile) || is_null($file)) {
+            throw new StateMachineException(
+                "File " . $this->workflowFile . "  doesn't exist or null, you must provide an existing workflow YAML file", 100, null
+            );
         }
         //read the file
         try {
             $this->workflow_array = $this->parseYAML();
             if ($this->workflow_array === false || $this->workflow_array === null) {
-                throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, null);
+                throw new StateMachineException("Error parsing " . $this->workflowFile . " file", 98, null);
             }
-        } catch (Symfony\Component\Yaml\Exception\ParseException $ex) {
-            throw new StateMachineException("Error parsing " . $this->workflow_file . " file", 98, $ex);
+        } catch (\Symfony\Component\Yaml\Exception\ParseException $ex) {
+            throw new StateMachineException("Error parsing " . $this->workflowFile . " file", 98, $ex);
         }
 
         $this->initWorkflow();
@@ -86,39 +71,50 @@ abstract class StateMachineAbstract implements StateMachineInterface
     protected function parseYAML()
     {
         try {
-            $yaml = Yaml::parse(file_get_contents($this->workflow_file));
-            $yaml_fixed = [];
+            $yaml                = Yaml::parse(file_get_contents($this->workflowFile));
+            $yaml_fixed          = [];
             $yaml_fixed['class'] = $yaml['class'];
             foreach ($yaml['states'] as $key => $value) {
                 if ($value['type'] != 'initial') {
-                    $state = ['name' => $key,
-                        'type' => $value['type'],
+                    $state                  = [
+                        'name'             => $key,
+                        'type'             => $value['type'],
                         'transitions_from' => $value['transitions_from'],
-                        'transitions_to' => $value['transitions_to']];
+                        'transitions_to'   => $value['transitions_to']
+                    ];
                     $yaml_fixed['states'][] = $state;
                 } else {
-                    $state = ['name' => $key,
-                        'type' => $value['type']];
+                    $state                  = [
+                        'name' => $key,
+                        'type' => $value['type']
+                    ];
                     $yaml_fixed['states'][] = $state;
                 }
             }
 
             return $yaml_fixed;
-        } catch (Symfony\Component\Yaml\Exception\ParseException $ex) {
+        } catch (\Symfony\Component\Yaml\Exception\ParseException $ex) {
             throw $ex;
         }
     }
 
     /**
-     * Create the instance of the real workflow
+     * Create the workflow
+     *
+     * @throws \Mothership\StateMachine\Exception\StateMachineException
      *
      * @return void
      */
     protected function initWorkflow()
     {
+        $className = $this->workflow_array['class']['name'];
+
+        if (!class_exists($className, true)) {
+            throw new StateMachineException('The class ' . $className . ' does not exist!', 100);
+        }
+
         try {
-            $class_name = $this->workflow_array['class']['name'];
-            $this->workflow = new $class_name($this->workflow_array);
+            $this->workflow = new $className($this->workflow_array);
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Workflow with some problems", 90, $ex);
         }
@@ -155,14 +151,19 @@ abstract class StateMachineAbstract implements StateMachineInterface
 
         $pattern = " %s  -> %s [ label = \"%s\" ];";
 
-        $_transitions = array();
+        $_transitions = [];
         foreach ($this->workflow_array['states'] as $state) {
             if (array_key_exists("transitions_from", $state)) {
                 $transitions_from = $state['transitions_from'];
                 foreach ($transitions_from as $from) {
                     if (is_array($from)) {
-                        $_transitions[] = sprintf($pattern, $from['status'], $state['name'], "<< IF "
-                            . $this->convertToStringCondition($from['result']) . " >>" . $state['name']);
+                        $_transitions[] = sprintf(
+                            $pattern,
+                            $from['status'],
+                            $state['name'],
+                            "<< IF "
+                            . $this->convertToStringCondition($from['result']) . " >>" . $state['name']
+                        );
                     } else {
                         $_transitions[] = sprintf($pattern, $from, $state['name'], $state['name']);
                     }
@@ -173,7 +174,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
         shell_exec('dot -Tpng /tmp/sm.gv -o ' . $outputPath);
 
         if ($stopAfterExecution) {
-            exit;
+            //exit;
         }
     }
 
@@ -181,22 +182,42 @@ abstract class StateMachineAbstract implements StateMachineInterface
      * Run the state machine with optional arguments
      *
      * @param array $args
+     * @param bool  $enableLog
      *
      * @return mixed
      *
      * @throws StateMachineException
      */
-    public function run(array $args = [])
+    public function run(array $args = [], $enableLog = false)
     {
         try {
-            return $this->workflow->run($args);
+            return $this->workflow->run($args, $enableLog);
         } catch (WorkflowException $ex) {
             throw new StateMachineException("Error running State Machine", 100, $ex);
         }
     }
 
     /**
-     * Convert the Condition to string
+     * @param $states
+     *
+     * @return void
+     */
+    public function acceptance($states)
+    {
+        $this->workflow->acceptance($states);
+    }
+
+    /**
+     * @return \Mothership\StateMachine\WorkflowAbstract
+     *
+     */
+    public function getWorkflow()
+    {
+        return $this->workflow;
+    }
+
+    /**
+     * Internal method required for the rendering.
      *
      * @param $condition
      *

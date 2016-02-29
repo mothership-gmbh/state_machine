@@ -27,29 +27,42 @@
  * @link      http://www.mothership.de/
  */
 
-namespace Mothership\StateMachine\Examples\Simple;
+namespace Mothership\StateMachine\Examples\SimpleLoop;
 
-use Mothership\StateMachine\WorkflowAbstract;
+use Mothership\StateMachine\CollectionWorkflowAbstract;
 
-class SimpleWorkflow extends WorkflowAbstract
+class SimpleLoopWorkflow extends CollectionWorkflowAbstract
 {
     function start()
     {
-        return 'huhu';
-    }
-
-    function second_state()
-    {
+        echo "\nStart";
+        return "omh";
 
     }
 
-    function third_state()
+    function prepare_collection()
     {
+        $this->_pointer = 0;
+        echo "\nPrepareCollection";
+        for($i = 0; $i <= 4; $i++) {
+            $this->_collection[$i] = $i;
+        }
+    }
 
+    function process_items()
+    {
+        echo "\nProcesssing: " . $this->_collection[$this->_pointer];
+
+        return (bool) rand(0, 1);
+    }
+
+    function do_it_again()
+    {
+        return (bool) rand(0, 1);
     }
 
     function finish()
     {
-
+        echo "\nFinish";
     }
 }

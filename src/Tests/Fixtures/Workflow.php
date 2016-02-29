@@ -5,19 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Mothership\StateMachine\Exception;
+namespace Mothership\StateMachine\Tests\Fixtures;
 
-use Mothership\Exception\ExceptionAbstract;
+use  \Mothership\StateMachine\WorkflowAbstract;
 
 /**
- * Class TransitionException.
+ * Class Workflow.
  *
  * @author    Don Bosco van Hoi <vanhoi@mothership.de>
- * @author    Maurizio Brioschi <brioschi@mothership.de>
  * @copyright 2016 Mothership GmbH
  *
  * @link      http://www.mothership.de/
  */
-class TransitionException extends ExceptionAbstract
+class Workflow extends WorkflowAbstract
 {
+
 }
