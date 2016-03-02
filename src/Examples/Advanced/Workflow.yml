@@ -41,19 +41,19 @@ states:
     transitions_from: [{status: product_has_media_gallery, result:  false}]
     transitions_to:   [create_media_gallery]
 
-  get_images:
+  prepare_collection:
     type: normal
     transitions_from: [{status: product_has_media_gallery, result:  true}, create_media_gallery]
-    transitions_to:   [get_images]
+    transitions_to:   [prepare_collection]
 
-  process_images:
+  process_items:
     type: normal
-    transitions_from: [get_images, {status: has_more, result:  true}]
-    transitions_to:   [process_images]
+    transitions_from: [prepare_collection, {status: has_more, result:  true}]
+    transitions_to:   [process_items]
 
   original_image_exist_as_copy:
     type: normal
-    transitions_from: [process_images]
+    transitions_from: [process_items]
     transitions_to:   [original_image_exist_as_copy]
 
   hash_equals_original:

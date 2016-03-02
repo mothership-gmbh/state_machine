@@ -27,12 +27,10 @@
  */
 namespace Mothership\StateMachine\Examples\Advanced;
 
-use Mothership\StateMachine\WorkflowAbstract;
+use Mothership\StateMachine\CollectionWorkflowAbstract;
 
-class AdvancedWorkflow extends WorkflowAbstract
+class AdvancedWorkflow extends CollectionWorkflowAbstract
 {
-    protected $_collection = [];
-    protected $_pointer    = 0;
 
     function start()
     {}
@@ -91,9 +89,8 @@ class AdvancedWorkflow extends WorkflowAbstract
      *
      * @return void
      */
-    public function get_images()
+    public function prepare_collection()
     {
-        //$this->_collection = end($this->_images->parse($this->_document));
         for ($i = 0; $i <= 100; $i++) {
             $this->_collection[] = ['test'];
         }
@@ -105,7 +102,7 @@ class AdvancedWorkflow extends WorkflowAbstract
      *
      * @return void
      */
-    public function process_images()
+    public function process_items()
     {
     }
 
@@ -157,15 +154,6 @@ class AdvancedWorkflow extends WorkflowAbstract
 
     public function assign_image()
     {
-    }
-
-    public function has_more()
-    {
-        if ($this->_pointer +1 == count($this->_collection)) {
-            return false;
-        }
-        $this->_pointer++;
-        return true;
     }
 
     public function finish()
