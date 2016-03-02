@@ -30,8 +30,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     protected $yamlfile = [];
 
     /**
-     * A workflow defines a set of mandatory methods. If the methods are not present,
-     * then throw an exception.
+     * Test for rendering the state machine
      *
      * @test
      *
@@ -43,9 +42,15 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function testRenderGraph($dir, $class, $yml)
     {
-        $path = '/tmp/workflow.png';
-        $state_machine = new $class($yml);
-        $state_machine->renderGraph($path, false);
+        fwrite(STDERR, sprintf("\nCurrent workflow: %s", $class));
+
+        $path = getcwd() . '/' . str_replace("\\", "_", $class) . '.png';
+
+        echo $path;
+
+        /** @var \Mothership\StateMachine\StateMachineAbstract $stateMachine */
+        $stateMachine = new $class($yml);
+        $stateMachine->renderGraph($path, false);
         $this->assertTrue(file_exists($path));
     }
 
@@ -166,7 +171,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function hinitializationWorks($dir, $class, $yml)
     {
-        fwrite(STDERR, sprintf("\nCurrent workflow: %s", $class));
+        //fwrite(STDERR, sprintf("\nCurrent workflow: %s", $class));
 
         $stateMachine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
         $this->assertTrue($stateMachine->getWorkflow() instanceof \Mothership\StateMachine\WorkflowAbstract);
@@ -246,6 +251,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
         $log = $stateMachine->getWorkflow()->getLog();
 
         $stateMachine->getWorkflow()->acceptance($log);
+        $stateMachine->acceptance($log); // method equals to the above. Just a wrapper
     }
 
     /**

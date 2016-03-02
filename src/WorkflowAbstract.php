@@ -295,8 +295,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
      * Check if the current automata can run in a given order.
      *
      * @param array $states
+     * @param bool  $verbose Print debug information
+     *
+     * @return bool
      */
-    public function acceptance(array $states = [])
+    public function acceptance(array $states = [], $verbose = false)
     {
         if (count($states) < 2) {
             throw new \Exception('Automata needs at least two states');
@@ -314,10 +317,13 @@ abstract class WorkflowAbstract implements WorkflowInterface
             $message = sprintf('δ: (C × Z[%d] → Z[%d) = [%s] x [%s] → [%s] ', $this->getStatusIndex($state['name']), $this->getStatusIndex($states[$index + 1]['name']), var_export($condition, true), $state['name'], $states[$index + 1]['name']);
             if ($nextState->getName() !== $states[$index + 1]['name']) {
                 throw new \Exception('Invalid transition. Last transition: '.$message.' . Given: '.$nextState->getName());
-            } else {
-                echo "\n".$message;
+            }
+
+            if (true === $verbose) {
+                $this->output->writeln($message);
             }
         }
+        return true;
     }
 
     /**
@@ -353,8 +359,10 @@ abstract class WorkflowAbstract implements WorkflowInterface
     protected function getNextStateFrom($currentTransition, $condition = null)
     {
         $possibleTransition = null;
+
+        /** @var \Mothership\StateMachine\Status $status */
         foreach ($this->states as $statusIndex => $status) {
-            if (empty($status->getTransitions())) {
+            if (count($status->getTransitions()) == 0) {
                 continue;
             }
 

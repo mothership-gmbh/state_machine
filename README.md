@@ -1,7 +1,7 @@
 PHP State Machine / FSM / Acceptance Automata
 ------------------------------------------------------
 
-![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master) [![Summary](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16?child=summary) [![Latest Stable Version](https://poser.pugx.org/mothership/state_machine/v/stable)](https://packagist.org/packages/mothership/state_machine) [![Total Downloads](https://poser.pugx.org/mothership/state_machine/downloads)](https://packagist.org/packages/mothership/state_machine) [![Latest Unstable Version](https://poser.pugx.org/mothership/state_machine/v/unstable)](https://packagist.org/packages/mothership/state_machine) [![License](https://poser.pugx.org/mothership/state_machine/license)](https://packagist.org/packages/mothership/state_machine)
+[![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)](https://travis-ci.org/mothership-gmbh/state_machine) [![Summary](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16?child=summary) [![Latest Stable Version](https://poser.pugx.org/mothership/state_machine/v/stable)](https://packagist.org/packages/mothership/state_machine) [![Total Downloads](https://poser.pugx.org/mothership/state_machine/downloads)](https://packagist.org/packages/mothership/state_machine) [![Latest Unstable Version](https://poser.pugx.org/mothership/state_machine/v/unstable)](https://packagist.org/packages/mothership/state_machine) [![License](https://poser.pugx.org/mothership/state_machine/license)](https://packagist.org/packages/mothership/state_machine)
 -----------------------------------------
 A PHP based state machine implementation.
 
@@ -177,7 +177,7 @@ $state_machine = $state_machine->renderGraph($path, false);
 
 Let's assume a more advanced workflow like that one: [Advanced Workflow](./src/Examples/Advanced/Workflow.yml). The rendered graph will look like the following:
 
-![](./src/Examples/Advanced/workflow.png)
+![](./src/Examples/Advanced/Mothership_StateMachine_Examples_Advanced_AdvancedStateMachine.png)
 
 We will go through smaller examples to discuss the different transition types.
 
@@ -253,6 +253,27 @@ Just do it like that:
 #More examples
 
 Check the directory ```./src/Examples``` to explore more advanced examples by your own. You can also add new state machines into this directory, to automatically run unit tests.
+
+
+## Simple
+
+[![Advanced Workflow](./src/Examples/Simple/Mothership_StateMachine_Examples_Simple_SimpleStateMachine.png)](./src/Examples/Simple)
+
+## SimpleLoop
+
+[![Advanced Workflow](./src/Examples/SimpleLoop/Mothership_StateMachine_Examples_SimpleLoop_SimpleLoopStateMachine.png)](./src/Examples/SimpleLoop/)
+
+## IfConditions
+
+[![Advanced Workflow](./src/Examples/IfConditions/Mothership_StateMachine_Examples_IfConditions_IfConditionsStateMachine.png)](./src/Examples/IfConditions)
+
+## Boolean Conditions
+
+[![Advanced Workflow](./src/Examples/BooleanConditions/Mothership_StateMachine_Examples_BooleanConditions_BooleanConditionsStateMachine.png)](./src/Examples/BooleanConditions)
+
+## Advanced Workflow
+
+[![Advanced Workflow](./src/Examples/Advanced/Mothership_StateMachine_Examples_Advanced_AdvancedStateMachine.png)](./src/Examples/Advanced)
 
 
 #Tests

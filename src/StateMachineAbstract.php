@@ -198,18 +198,22 @@ abstract class StateMachineAbstract implements StateMachineInterface
     }
 
     /**
-     * @param $states
+     * Wrapper for running the acceptance test
+     *
+     * @param mixed $states
+     * @param bool  $verbose
      *
      * @return void
      */
-    public function acceptance($states)
+    public function acceptance($states, $verbose = false)
     {
-        $this->workflow->acceptance($states);
+        $this->workflow->acceptance($states, $verbose);
     }
 
     /**
-     * @return \Mothership\StateMachine\WorkflowAbstract
+     * Retreive the workflow implementation
      *
+     * @return \Mothership\StateMachine\WorkflowAbstract
      */
     public function getWorkflow()
     {
