@@ -177,7 +177,7 @@ $state_machine = $state_machine->renderGraph($path, false);
 
 Let's assume a more advanced workflow like that one: [Advanced Workflow](./src/Examples/Advanced/Workflow.yml). The rendered graph will look like the following:
 
-![](./src/Examples/Advanced/workflow.png)
+![](./src/Examples/Advanced/Mothership_StateMachine_Examples_Advanced_AdvancedStateMachine.png)
 
 We will go through smaller examples to discuss the different transition types.
 
