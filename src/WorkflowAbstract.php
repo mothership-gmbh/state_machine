@@ -246,9 +246,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
              * However the return value will be seen as a condition for the NEXT state
              * transition evaluation.
              */
-            $this->executeMethod('_preDispatch');
+            $this->executeMethod('preDispatch');
             $condition = $this->executeMethod($nextState->getName());
-            $this->executeMethod('_preDispatch');
+            $this->executeMethod('postDispatch');
 
             if (true === $saveLog) {
                 $this->addToLog($nextState->getName(), $condition);

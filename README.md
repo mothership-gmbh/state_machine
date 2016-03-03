@@ -3,24 +3,28 @@ PHP State Machine / FSM / Acceptance Automata
 
 [![](https://travis-ci.org/mothership-gmbh/state_machine.svg?branch=master)](https://travis-ci.org/mothership-gmbh/state_machine) [![Summary](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56b0dda83d82b90032bfff16?child=summary) [![Latest Stable Version](https://poser.pugx.org/mothership/state_machine/v/stable)](https://packagist.org/packages/mothership/state_machine) [![Total Downloads](https://poser.pugx.org/mothership/state_machine/downloads)](https://packagist.org/packages/mothership/state_machine) [![Latest Unstable Version](https://poser.pugx.org/mothership/state_machine/v/unstable)](https://packagist.org/packages/mothership/state_machine) [![License](https://poser.pugx.org/mothership/state_machine/license)](https://packagist.org/packages/mothership/state_machine)
 -----------------------------------------
-A PHP based state machine implementation.
+A PHP based state machine implementation with a graph generator.
 
 For more informations visit the [website](http://mothership-gmbh.github.io/state_machine)
 
-#Features
+# Design goals
+
+There are a lot of FSM(Finite State Machines) implementation. But most implementations do not have a proper documentation or are too overengineered in a lot of terms. This library tries to be a starting point for your own implementation by reading the code. In fact you can also use this for your own projects.
+
+# Features
 - Create a FSM-compatible state machine
 - Define your states, transitions and conditions completely in a configuration file. Currently only supports YAML
 - NO additional logic is needed to process the transitions. The state machine will automatically try to detect valid transitions
 - Render a graphic image that shows the behaviour of the state machine.
       
-#Tests
+# Tests
 You can run the unit tests with the following command:
 
     $ cd path/to/Mothership/Component/StateMachine/ #check your path
     $ composer install
 	$ phpunit
 
-#Installation
+# Installation
 
 You can use composer to directly install in in your project. Do not use the master branch but only tagged versions.
 
@@ -35,7 +39,7 @@ Then just run *composer install*
 
 	$ composer install
 
-##Requirement for rendering the graph
+## Requirement for rendering the graph
 
 The StateMachine render graph functionality depends on the *graphviz* library. On os with apt just install it with the package managment
 
@@ -43,7 +47,7 @@ The StateMachine render graph functionality depends on the *graphviz* library. O
 sudo apt-get install graphviz
 ```
 
-#Usage
+# Usage
 
 The state machine needs three files to be able to run:
 
@@ -51,7 +55,7 @@ The state machine needs three files to be able to run:
 2. The yaml configuration file
 3. A workflow definition
 
-##Quickstart
+## Quickstart
 
 In case you have everything or just want to skip the more detailed parts, take a look at this directory within this repository:
 
@@ -64,7 +68,7 @@ $stateMachine = new \Mothership\StateMachine\Examples\Simple('workflow.yml');
 $stateMachine->run();
 ```
 
-##1. The concrecte state machine
+## 1. The concrecte state machine
 
 There is no concrete StateMachine implementation in this library, except the examples. However the implementation is very easy and in fact just an inheritance of the abstract class.
 
@@ -78,11 +82,11 @@ class SimpleStateMachine extends \Mothership\StateMachine\StateMachineAbstract
 }
 ```
 
-##2. The yaml configuration file
+## 2. The yaml configuration file
 
 The yaml configuration file is the most important file as it describes various business cases. You will find more advanced use cases later. For the beginning take a look at the following workflow. 
 
-![](./src/Examples/Simple/workflow.png)
+![](./src/Examples/Simple/Mothership_StateMachine_Examples_Simple_SimpleStateMachine.png)
 
 By the way: the graph has been rendered with graphviz. You can also easily render it by your own with this command:
 
@@ -121,7 +125,7 @@ states:
     transitions_to:    [finish]
 
 ```
-###Good to know
+### Good to know
 
 
 * Every state, except *start* needs to be implemented as a method. For example the state with the name *second_state* expects a method named ```second_state()``` in the *workflow class*.
@@ -129,7 +133,7 @@ states:
 * You do not need to implement any programming logic for state transitions.
 * The possible types of the state can be *initial*, *normal* or *final*.
 
-##3. The workflow class
+## 3. The workflow class
 
 While the *configuration file* defines the possible transitions of the automata, the workflow class contains the possible transitions. Let's check this code:
 
@@ -160,8 +164,9 @@ class SimpleWorkflow extends WorkflowAbstract
 * There is *no* method ```start()``` as this state will never be executed but is just a starting point
 * The basic methods do not return any value. More advanced methods can for example return a boolean value or any string. This important for more advanced use cases.
 * The name of the class *MUST* match the name of the class in the configuration file
+* You can use a ```preDispatch()``` or ```postDispatch()``` method after each state. It might be better to use a callback handler for that kind of stuff but to keep this library small, easy to understand and suitable for basic cases, this decision was made.
 
-#Render the graph
+# Render the graph
 It is recommended to render your workflow as a graph, so that you will get visual support.
 
 ```
@@ -173,7 +178,7 @@ $state_machine = $state_machine->renderGraph($path, false);
 
 **true/false**: if you want that after the render the state machine exits (default is true)
 
-#Advanced Use Cases
+# Advanced Use Cases
 
 Let's assume a more advanced workflow like that one: [Advanced Workflow](./src/Examples/Advanced/Workflow.yml). The rendered graph will look like the following:
 
@@ -181,7 +186,7 @@ Let's assume a more advanced workflow like that one: [Advanced Workflow](./src/E
 
 We will go through smaller examples to discuss the different transition types.
 
-##Conditionals
+## Conditionals
 
 Check the transition ```product_has_media_gallery``` and ```create_media_gallery```|```get_images```
 
@@ -218,7 +223,7 @@ As you can see, you need to have a condition *AFTER* the *start* state. This mea
 	```
 * The state ```get_images``` can be processed with two different transitions.
 
-##Loops
+## Loops
 
 Loops are very useful if you need to process a large set of data. The pattern is pretty simple. Take a look at the states ```process_images```, ```has_more``` and ```finish```.
 
@@ -250,7 +255,7 @@ Just do it like that:
 ```
 
 
-#More examples
+# More examples
 
 Check the directory ```./src/Examples``` to explore more advanced examples by your own. You can also add new state machines into this directory, to automatically run unit tests.
 
@@ -276,11 +281,11 @@ Check the directory ```./src/Examples``` to explore more advanced examples by yo
 [![Advanced Workflow](./src/Examples/Advanced/Mothership_StateMachine_Examples_Advanced_AdvancedStateMachine.png)](./src/Examples/Advanced)
 
 
-#Tests
+# Tests
 - Run test from root directory: ```phpunit --coverage-text```
 - You can add your State machine in the ```./src/Examples``` folder and it will be automatically tested with the 
 command about. **Just use the same conventions name space**
 
-#Notes
+# Notes
 - **Mothership StateMachine** is inspired by [Finite/StateMachine](https://github.com/yohang/Finite) presents in this extension
 - [dev-master api](http://mothership-gmbh.github.io/state_machine/api/dev-master/)
