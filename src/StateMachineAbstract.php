@@ -23,11 +23,19 @@ use Symfony\Component\Yaml\Yaml;
 abstract class StateMachineAbstract implements StateMachineInterface
 {
     /**
-     * @var null|string
+     * The original configuration for the state machine.
+     *
+     * @var mixed
      */
-    protected $workflowFile = null;
+    protected $configuration;
 
-    protected $workflow_array;
+    /**
+     * The workflow configuration onlycontains the parsed
+     * configuration
+     *
+     * @var mixed
+     */
+    protected $workflowConfiguration;
 
     /**
      * @var \Mothership\StateMachine\WorkflowAbstract
@@ -35,33 +43,34 @@ abstract class StateMachineAbstract implements StateMachineInterface
     protected $workflow;
 
     /**
-     * @param string $file
+     * Pass the.
+     *
+     * @param array $configuration
      *
      * @throws StateMachineException
      */
-    public function __construct($file = null)
+    public function __construct(array $configuration)
     {
-        $this->workflowFile = $file;
-        if (!file_exists($this->workflowFile) || is_null($file)) {
-            throw new StateMachineException(
-                "File " . $this->workflowFile . "  doesn't exist or null, you must provide an existing workflow YAML file", 100, null
-            );
+        $this->configuration = $configuration;
+        if (empty($configuration)) {
+            throw new StateMachineException('Empty configuraiton file', 98, null);
         }
+
         //read the file
         try {
-            $this->workflow_array = $this->parseYAML();
-            if ($this->workflow_array === false || $this->workflow_array === null) {
-                throw new StateMachineException("Error parsing " . $this->workflowFile . " file", 98, null);
+            $this->workflowConfiguration = $this->parseYAML();
+            if ($this->workflowConfiguration === false || $this->workflowConfiguration === null) {
+                throw new StateMachineException('Error parsing the configuration', 98, null);
             }
         } catch (\Symfony\Component\Yaml\Exception\ParseException $ex) {
-            throw new StateMachineException("Error parsing " . $this->workflowFile . " file", 98, $ex);
+            throw new StateMachineException('Error parsing the configuration', 98, $ex);
         }
 
         $this->initWorkflow();
     }
 
     /**
-     * Parse the yaml file
+     * Parse the yaml configuration.
      *
      * @return array
      *
@@ -71,7 +80,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
     protected function parseYAML()
     {
         try {
-            $yaml                = Yaml::parse(file_get_contents($this->workflowFile));
+            $yaml                = $this->configuration;
             $yaml_fixed          = [];
             $yaml_fixed['class'] = $yaml['class'];
             foreach ($yaml['states'] as $key => $value) {
@@ -80,13 +89,13 @@ abstract class StateMachineAbstract implements StateMachineInterface
                         'name'             => $key,
                         'type'             => $value['type'],
                         'transitions_from' => $value['transitions_from'],
-                        'transitions_to'   => $value['transitions_to']
+                        'transitions_to'   => $value['transitions_to'],
                     ];
                     $yaml_fixed['states'][] = $state;
                 } else {
                     $state                  = [
                         'name' => $key,
-                        'type' => $value['type']
+                        'type' => $value['type'],
                     ];
                     $yaml_fixed['states'][] = $state;
                 }
@@ -99,29 +108,27 @@ abstract class StateMachineAbstract implements StateMachineInterface
     }
 
     /**
-     * Create the workflow
+     * Create the workflow.
      *
      * @throws \Mothership\StateMachine\Exception\StateMachineException
-     *
-     * @return void
      */
     protected function initWorkflow()
     {
-        $className = $this->workflow_array['class']['name'];
+        $className = $this->workflowConfiguration['class']['name'];
 
         if (!class_exists($className, true)) {
             throw new StateMachineException('The class ' . $className . ' does not exist!', 100);
         }
 
         try {
-            $this->workflow = new $className($this->workflow_array);
+            $this->workflow = new $className($this->workflowConfiguration);
         } catch (WorkflowException $ex) {
-            throw new StateMachineException("Workflow with some problems", 90, $ex);
+            throw new StateMachineException('Workflow with some problems', 90, $ex);
         }
     }
 
     /**
-     * create a graph for the state machine
+     * create a graph for the state machine.
      *
      * @param string     $outputPath         relative path of the generated image
      * @param bool|false $stopAfterExecution if we want to exit after graphic generation
@@ -130,30 +137,29 @@ abstract class StateMachineAbstract implements StateMachineInterface
      */
     public function renderGraph($outputPath = './workflow.png', $stopAfterExecution = true)
     {
-
-        /**
+        /*
          * This example is based on http://martin-thoma.com/how-to-draw-a-finite-state-machine/
          * Feel free to tweak the rendering output. I have decided do use the most simple
          * implementation over the fancy stuff to avoid additional complexity.
          */
         $template
-            = "
+            = '
             digraph finite_state_machine {
                 rankdir=LR;
-                size=\"%d\"
+                size="%d"
 
                 node [shape = doublecircle]; start;
                 node [shape = circle];
 
                 %s
             }
-        ";
+        ';
 
-        $pattern = " %s  -> %s [ label = \"%s\" ];";
+        $pattern = ' %s  -> %s [ label = "%s" ];';
 
         $_transitions = [];
-        foreach ($this->workflow_array['states'] as $state) {
-            if (array_key_exists("transitions_from", $state)) {
+        foreach ($this->workflowConfiguration['states'] as $state) {
+            if (array_key_exists('transitions_from', $state)) {
                 $transitions_from = $state['transitions_from'];
                 foreach ($transitions_from as $from) {
                     if (is_array($from)) {
@@ -161,8 +167,8 @@ abstract class StateMachineAbstract implements StateMachineInterface
                             $pattern,
                             $from['status'],
                             $state['name'],
-                            "<< IF "
-                            . $this->convertToStringCondition($from['result']) . " >>" . $state['name']
+                            '<< IF '
+                            . $this->convertToStringCondition($from['result']) . ' >>' . $state['name']
                         );
                     } else {
                         $_transitions[] = sprintf($pattern, $from, $state['name'], $state['name']);
@@ -179,7 +185,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
     }
 
     /**
-     * Run the state machine with optional arguments
+     * Run the state machine with optional arguments.
      *
      * @param array $args
      * @param bool  $enableLog
@@ -193,17 +199,15 @@ abstract class StateMachineAbstract implements StateMachineInterface
         try {
             return $this->workflow->run($args, $enableLog);
         } catch (WorkflowException $ex) {
-            throw new StateMachineException("Error running State Machine", 100, $ex);
+            throw new StateMachineException('Error running State Machine', 100, $ex);
         }
     }
 
     /**
-     * Wrapper for running the acceptance test
+     * Wrapper for running the acceptance test.
      *
      * @param mixed $states
      * @param bool  $verbose
-     *
-     * @return void
      */
     public function acceptance($states, $verbose = false)
     {
@@ -211,7 +215,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
     }
 
     /**
-     * Retreive the workflow implementation
+     * Retreive the workflow implementation.
      *
      * @return \Mothership\StateMachine\WorkflowAbstract
      */
@@ -231,13 +235,12 @@ abstract class StateMachineAbstract implements StateMachineInterface
     {
         if (is_bool($condition)) {
             if ($condition) {
-                return "TRUE";
+                return 'TRUE';
             } else {
-                return "FALSE";
+                return 'FALSE';
             }
         }
 
         return (string) $condition;
     }
 }
-
