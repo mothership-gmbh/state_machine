@@ -61,7 +61,10 @@ class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
         $workflow = [];
         foreach ($this->state_machine_dir as $dir) {
             $state_machine_class = "Mothership\\StateMachine\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "StateMachine";
-            $state_machine = new $state_machine_class($dir['PATH'] . 'Workflow.yml');
+
+            $configurationFile= Yaml::parse(file_get_contents($dir['PATH'] . 'Workflow.yml'));
+
+            $state_machine = new $state_machine_class($configurationFile);
             array_push($workflow, [
                 "Mothership\\StateMachine\\Examples\\" . $dir['NAME'] . "\\" . $dir['NAME'] . "Workflow",
                 $this->invokeMethod($state_machine, "parseYAML"),

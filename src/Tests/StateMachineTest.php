@@ -8,6 +8,8 @@
 namespace Mothership\StateMachine\Tests;
 
 use Mothership\StateMachine\StatusInterface;
+use Symfony\Component\Yaml\Yaml;
+
 
 /**
  * Class StateMachineTest.
@@ -49,7 +51,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
         echo $path;
 
         /** @var \Mothership\StateMachine\StateMachineAbstract $stateMachine */
-        $stateMachine = new $class($yml);
+        $stateMachine = new $class(Yaml::parse(file_get_contents($yml)));
         $stateMachine->renderGraph($path, false);
         $this->assertTrue(file_exists($path));
     }
@@ -90,7 +92,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function testParseYAML($dir, $class, $yml)
     {
-        $state_machine = new $class($yml);
+        $state_machine = new $class(Yaml::parse(file_get_contents($yml)));
         $yaml_array = $this->invokeMethod($state_machine, 'parseYAML');
         $this->assertArrayHasKey('states', $yaml_array);
         $this->assertArrayHasKey('class', $yaml_array);
@@ -121,7 +123,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     public function testMethodNotImplementedException()
     {
         $workflow = getcwd().'/src/Examples/Fail/Workflow.yml';
-        new \Mothership\StateMachine\Examples\Fail\FailStateMachine($workflow);
+        new \Mothership\StateMachine\Examples\Fail\FailStateMachine(Yaml::parse(file_get_contents($workflow)));
     }
 
     /**
@@ -138,7 +140,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function noWorkflowFilePresent()
     {
-        new \Mothership\StateMachine\StateMachine(null, new \Symfony\Component\Console\Output\ConsoleOutput());
+        new \Mothership\StateMachine\StateMachine([], new \Symfony\Component\Console\Output\ConsoleOutput());
     }
 
     /**
@@ -156,7 +158,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     public function workflowInitializationFailed()
     {
         $invalidWorkflow = $this->getDir().'/src/Tests/Fixtures/Workflows/InvalidWorkflowClass.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($invalidWorkflow, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($invalidWorkflow)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run();
     }
 
@@ -173,7 +175,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     {
         //fwrite(STDERR, sprintf("\nCurrent workflow: %s", $class));
 
-        $stateMachine = new $class($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new $class(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $this->assertTrue($stateMachine->getWorkflow() instanceof \Mothership\StateMachine\WorkflowAbstract);
     }
 
@@ -188,7 +190,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function hasWorkflowAfterInitialization($dir, $class, $yml)
     {
-        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run();
     }
 
@@ -203,7 +205,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function stateMachineWillReachFinalState($dir, $class, $yml)
     {
-        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run();
         $currentState = $stateMachine->getWorkflow()->getCurrentStatus();
         $this->assertTrue($currentState->getType() === StatusInterface::TYPE_FINAL);
@@ -220,8 +222,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function logIsEnabledAndReturnsValues($dir, $class, $yml)
     {
-        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
         $log = $stateMachine->getWorkflow()->getLog();
         $this->assertTrue(is_array($log));
@@ -245,8 +246,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function acceptanceTestWillNotFail($dir, $class, $yml)
     {
-        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
         $stateMachine->run([], \Mothership\StateMachine\WorkflowInterface::ENABLE_LOG);
         $log = $stateMachine->getWorkflow()->getLog();
 
@@ -265,8 +265,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
      */
     public function injectArguments($dir, $class, $yml)
     {
-        $invalidWorkflow = $this->getDir().'/src/Examples/BooleanConditions/Workflow.yml';
-        $stateMachine = new \Mothership\StateMachine\StateMachine($yml, new \Symfony\Component\Console\Output\ConsoleOutput());
+        $stateMachine = new \Mothership\StateMachine\StateMachine(Yaml::parse(file_get_contents($yml)), new \Symfony\Component\Console\Output\ConsoleOutput());
 
         // Inject random values
         $maxKeys = rand(5, 10);
