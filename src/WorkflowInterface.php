@@ -26,7 +26,7 @@ interface WorkflowInterface
     const ENABLE_LOG = true;
 
     /**
-     * Set the inizial state of the workflow.
+     * Set the initial state of the workflow.
      *
      * @return mixed
      */
