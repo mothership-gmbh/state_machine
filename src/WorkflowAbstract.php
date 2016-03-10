@@ -61,7 +61,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
             $this->vars[$key] = $value;
         }
 
-        $this->init();
+        $this->initializeStates();
     }
 
     /**
@@ -85,9 +85,13 @@ abstract class WorkflowAbstract implements WorkflowInterface
     }
 
     /**
+     * Initialize the states
+     *
      * @throws WorkflowException
+     *
+     * @return void
      */
-    protected function init()
+    protected function initializeStates()
     {
         if (!array_key_exists('states', $this->vars)) {
             throw new WorkflowException("You must define some states:\n", 99, null);
@@ -117,8 +121,6 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 $methods_not_implemented, 79, null
             );
         }
-
-        $this->setInitialState();
     }
 
     /**
@@ -127,6 +129,18 @@ abstract class WorkflowAbstract implements WorkflowInterface
      * @return StatusInterface
      *
      * @throws WorkflowException
+     */
+    public function reset()
+    {
+        $this->setInitialState();
+        $this->log = [];
+
+    }
+
+    /**
+     * Set the initial state
+     *
+     * @return void
      */
     public function setInitialState()
     {
@@ -214,9 +228,10 @@ abstract class WorkflowAbstract implements WorkflowInterface
     /**
      * The main method, which processes the state machine.
      *
-     * @param bool $saveLog If enabled, then all processed states will be
-     *                      stored and can be processed in the acceptance method
-     *                      later for debugging purpose
+     * @param mixed $args    You might pass external logic
+     * @param bool  $saveLog If enabled, then all processed states will be
+     *                       stored and can be processed in the acceptance method
+     *                       later for debugging purpose
      *
      * @throws \Exception
      *
@@ -224,16 +239,24 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     public function run($args = [],  $saveLog = false)
     {
+        /**
+         * The state machine must be able to re run the same processes again.
+         */
+        $this->reset();
+
         // just store the arguments for external logic
         $this->args = $args;
 
         $continueExecution = true;
         $nextState = $this->currentStatus;
 
-        // execute the current workflow
+        /**
+         * Based on the initial state, the algorithm
+         * will try to execute each method until the
+         * final state is reached
+         */
         while (true === $continueExecution) {
 
-            // it is better to work with StatusInterface::TYPE_FINAL
             if ($nextState->getType() == StatusInterface::TYPE_FINAL) {
                 $continueExecution = false;
             }
