@@ -29,6 +29,9 @@ interface StatusInterface
     // All other states must be normal
     const TYPE_NORMAL = 'normal';
 
+    // only for exception states
+    const TYPE_EXCEPTION = 'exception';
+
     /**
      * Returns the state name.
      *
