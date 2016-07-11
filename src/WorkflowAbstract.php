@@ -13,17 +13,12 @@ use Mothership\StateMachine\Exception\WorkflowException;
 
 /**
  * Class WorkflowAbstract.
- *
- * @category  Mothership
- *
- * @author    Maurizio Brioschi <brioschi@mothership.de>
- * @author    Don Bosco van Hoi <vanhoi@mothership.de>
- * @copyright 2015 Mothership GmbH
- *
- * @link      http://www.mothership.de/
  */
 abstract class WorkflowAbstract implements WorkflowInterface
 {
+    /**
+     * @var array
+     */
     protected $args = [];
 
     /**
@@ -37,6 +32,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
      * @var mixed[StatusInterface];
      */
     protected $states = [];
+
+    /**
+     * @var array
+     */
+    protected $log;
 
     /**
      * @var \Mothership\StateMachine\StatusInterface
@@ -71,9 +71,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
      *
      * @return array|null
      */
-    public function getArgs($key = null)
+    public function getArgs($key = NULL)
     {
-        if (null === $key) {
+        if (NULL === $key) {
             return $this->args;
         }
 
@@ -94,7 +94,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
     protected function initializeStates()
     {
         if (!array_key_exists('states', $this->vars)) {
-            throw new WorkflowException("You must define some states:\n", 99, null);
+            throw new WorkflowException("You must define some states:\n", 99, NULL);
         }
 
         //check if all the methods for each status is callable
@@ -107,18 +107,20 @@ abstract class WorkflowAbstract implements WorkflowInterface
                  * The initial state will never be executed but only the transitions, therefore it will be excluded
                  * from the list of methods which must be implemented
                  */
-                if (!method_exists($this, $status['name']) && $status['type'] != 'initial') {
-                    $methods_not_implemented .= $status['name']."\n";
+                if (!method_exists($this, $status['name'])
+                    && $status['type'] != \Mothership\StateMachine\StatusInterface::TYPE_INITIAL
+                    && $status['type'] != \Mothership\StateMachine\StatusInterface::TYPE_EXCEPTION) {
+                    $methods_not_implemented .= $status['name'] . "\n";
                 }
             }
         } catch (StatusException $ex) {
-            throw new WorkflowException("Error in one state of the workflow:\n".$ex->getMessage(), 79);
+            throw new WorkflowException("Error in one state of the workflow:\n" . $ex->getMessage(), 79);
         }
 
         if (strlen($methods_not_implemented) > 0) {
             throw new WorkflowException(
-                "This methods are not implemented in the workflow:\n".
-                $methods_not_implemented, 79, null
+                "This methods are not implemented in the workflow:\n" .
+                $methods_not_implemented, 79, NULL
             );
         }
     }
@@ -134,7 +136,6 @@ abstract class WorkflowAbstract implements WorkflowInterface
     {
         $this->setInitialState();
         $this->log = [];
-
     }
 
     /**
@@ -151,7 +152,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return;
             }
         }
-        throw new WorkflowException('No initial state found for the workflow', 90, null);
+        throw new WorkflowException('No initial state found for the workflow', 90, NULL);
     }
 
     /**
@@ -192,10 +193,8 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 return $status;
             }
         }
-        throw new WorkflowException('No status found with the name '.$name, 70, null);
+        throw new WorkflowException('No status found with the name ' . $name, 70, NULL);
     }
-
-    protected $log;
 
     /**
      * The log will create.
@@ -205,11 +204,11 @@ abstract class WorkflowAbstract implements WorkflowInterface
      *
      * @return mixed
      */
-    protected function addToLog($state, $return = null)
+    protected function addToLog($state, $return = NULL)
     {
         $data['name'] = $state;
 
-        if (null !== $return) {
+        if (NULL !== $return) {
             $data['return'] = $return;
         }
         $this->log[] = $data;
@@ -237,7 +236,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
      *
      * @return void|mixed
      */
-    public function run($args = [],  $saveLog = false)
+    public function run($args = [], $saveLog = false)
     {
         /**
          * The state machine must be able to re run the same processes again.
@@ -248,7 +247,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
         $this->args = $args;
 
         $continueExecution = true;
-        $nextState = $this->currentStatus;
+        $nextState         = $this->currentStatus;
 
         /**
          * Based on the initial state, the algorithm
@@ -269,15 +268,25 @@ abstract class WorkflowAbstract implements WorkflowInterface
              * However the return value will be seen as a condition for the NEXT state
              * transition evaluation.
              */
-            $this->executeMethod('preDispatch');
-            $condition = $this->executeMethod($nextState->getName());
-            $this->executeMethod('postDispatch');
+            try {
+                $this->executeMethod('preDispatch');
+                $condition = $this->executeMethod($nextState->getName());
+                $this->executeMethod('postDispatch');
+
+            } catch (\Exception $e) {
+                if (method_exists($this, 'exception')) {
+                    $nextState = $this->getNextStateFrom('exception');
+
+                    $this->setState($nextState);
+                    continue;
+                }
+            }
 
             if (true === $saveLog) {
                 $this->addToLog($nextState->getName(), $condition);
             }
 
-            /*
+            /**
              * Mark the execution to be stopped when the next state
              * is StatusInterface::TYPE_FINAL.
              */
@@ -287,12 +296,13 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
             $nextState = $this->getNextStateFrom($nextState->getName(), $condition);
 
-            /*
+            /**
              * Overwrite the current state. This does not affect
              * the application logic but will be used for debugging purpose to be able
              * to inspect the current state machine
              */
             $this->setState($nextState);
+
         }
 
         if (true === $saveLog) {
@@ -329,7 +339,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
         }
 
         foreach ($states as $index => $state) {
-            $condition = (array_key_exists('return', $state)) ? $state['return'] : null;
+            $condition = (array_key_exists('return', $state)) ? $state['return'] : NULL;
 
             if ($index + 1 == count($states) || $state['name'] == 'finish') {
                 continue;
@@ -337,15 +347,23 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
             $nextState = $this->getNextStateFrom($state['name'], $condition);
 
-            $message = sprintf('δ: (C × Z[%d] → Z[%d) = [%s] x [%s] → [%s] ', $this->getStatusIndex($state['name']), $this->getStatusIndex($states[$index + 1]['name']), var_export($condition, true), $state['name'], $states[$index + 1]['name']);
+            $message = sprintf(
+                'δ: (C × Z[%d] → Z[%d) = [%s] x [%s] → [%s] ',
+                $this->getStatusIndex($state['name']),
+                $this->getStatusIndex($states[$index + 1]['name']),
+                var_export($condition, true),
+                $state['name'],
+                $states[$index + 1]['name']
+            );
             if ($nextState->getName() !== $states[$index + 1]['name']) {
-                throw new \Exception('Invalid transition. Last transition: '.$message.' . Given: '.$nextState->getName());
+                throw new \Exception('Invalid transition. Last transition: ' . $message . ' . Given: ' . $nextState->getName());
             }
 
             if (true === $verbose) {
                 $this->output->writeln($message);
             }
         }
+
         return true;
     }
 
@@ -379,9 +397,9 @@ abstract class WorkflowAbstract implements WorkflowInterface
      *
      * @throws \Mothership\StateMachine\Exception\TransitionException
      */
-    protected function getNextStateFrom($currentTransition, $condition = null)
+    protected function getNextStateFrom($currentTransition, $condition = NULL)
     {
-        $possibleTransition = null;
+        $possibleTransition = NULL;
 
         /** @var \Mothership\StateMachine\Status $status */
         foreach ($this->states as $statusIndex => $status) {
@@ -409,7 +427,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 }
             }
         }
-        $error = "\nδ: (X × Z → Z) ".sprintf('[%s] x [%s] → [%s] ', $condition, $currentTransition, 'NULL');
+        $error = "\nδ: (X × Z → Z) " . sprintf('[%s] x [%s] → [%s] ', $condition, $currentTransition, 'NULL');
         throw new TransitionException($error);
     }
 }

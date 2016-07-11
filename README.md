@@ -280,6 +280,14 @@ Check the directory ```./src/Examples``` to explore more advanced examples by yo
 
 [![Advanced Workflow](./src/Examples/Advanced/Mothership_StateMachine_Examples_Advanced_AdvancedStateMachine.png)](./src/Examples/Advanced)
 
+## Exception Workflow
+
+This workflow is pretty advanced and IS NOT A STANDARD automata in terms of a DFA which only has ONE defined start. It is more useful if you need to build more complex state machines where you might have exceptions in different part of the code and do not know where to handle it. It is possible to model an exception handling as a transition for every single node but the side effect would be that you will have a lot of transitions in bigger graphs. 
+
+It is not recommended to have a general exception handling like that one, especially if you don't know what your workflow is doing.
+
+[![Exception Workflow](./src/Examples/Exception/Mothership_StateMachine_Examples_Exception_ExceptionStateMachine.png)](./src/Examples/Exception)
+
 
 # Tests
 - Run test from root directory: ```phpunit --coverage-text```

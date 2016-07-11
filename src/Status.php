@@ -29,7 +29,7 @@ class Status implements StatusInterface
     /**
      * @var array
      */
-    protected $types = [StatusInterface::TYPE_INITIAL, StatusInterface::TYPE_NORMAL, StatusInterface::TYPE_FINAL];
+    protected $types = [StatusInterface::TYPE_INITIAL, StatusInterface::TYPE_NORMAL, StatusInterface::TYPE_FINAL, StatusInterface::TYPE_EXCEPTION];
 
     /**
      * @var array|mixed
@@ -70,6 +70,7 @@ class Status implements StatusInterface
 
         switch ($type) {
             case StatusInterface::TYPE_INITIAL:
+            case StatusInterface::TYPE_EXCEPTION:
                 $mandatoryKeys = ['name'];
                 break;
 
@@ -84,7 +85,7 @@ class Status implements StatusInterface
             }
         }
 
-        if (StatusInterface::TYPE_INITIAL != $type) {
+        if (StatusInterface::TYPE_INITIAL != $type && StatusInterface::TYPE_EXCEPTION != $type) {
             $keysMustBeArray = ['transitions_from', 'transitions_to'];
             foreach ($keysMustBeArray as $key) {
                 if (!is_array($this->properties[$key])) {
@@ -107,13 +108,22 @@ class Status implements StatusInterface
     }
 
     /**
+     * @return bool
+     *
+     */
+    protected function isExceptionType()
+    {
+        return $this->getType() == StatusInterface::TYPE_EXCEPTION;
+    }
+
+    /**
      * @return mixed
      *
      * @throws StatusException
      */
     public function getTransitions()
     {
-        if (count($this->transitions) == 0 && !$this->isInitialType()) {
+        if (count($this->transitions) == 0 && !$this->isInitialType() && !$this->isExceptionType()) {
             foreach ($this->properties['transitions_from'] as $transition) {
                 array_push($this->transitions, new Transition($this, $transition));
             }
@@ -121,7 +131,7 @@ class Status implements StatusInterface
             if (count($this->transitions) == 0) {
                 throw new StatusException('No transitions available', 100, null);
             }
-        } elseif ($this->isInitialType()) {
+        } elseif ($this->isInitialType() || $this->isExceptionType()) {
             $this->transitions = [];
         }
 

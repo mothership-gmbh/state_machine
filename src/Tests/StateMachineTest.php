@@ -57,6 +57,8 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
     }
 
     /**
+     * Get all state machines
+     *
      * @return array
      */
     public function stateMachineProvider()
@@ -100,7 +102,7 @@ class StateMachineTest extends \Mothership\StateMachine\Tests\StateMachineTestCa
         foreach ($yaml_array['states'] as $state) {
             $this->assertArrayHasKey('name', $state);
             $this->assertArrayHasKey('type', $state);
-            if ($state['type'] != 'initial') {
+            if ($state['type'] != 'initial' && $state['type'] != 'exception') {
                 $this->assertArrayHasKey('transitions_from', $state);
                 $this->assertArrayHasKey('transitions_to', $state);
             }

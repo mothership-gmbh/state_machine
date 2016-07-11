@@ -53,7 +53,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
     {
         $this->configuration = $configuration;
         if (empty($configuration)) {
-            throw new StateMachineException('Empty configuraiton file', 98, null);
+            throw new StateMachineException('Empty configuration file', 98, null);
         }
 
         //read the file
@@ -84,7 +84,7 @@ abstract class StateMachineAbstract implements StateMachineInterface
             $yaml_fixed          = [];
             $yaml_fixed['class'] = $yaml['class'];
             foreach ($yaml['states'] as $key => $value) {
-                if ($value['type'] != 'initial') {
+                if ($value['type'] != \Mothership\StateMachine\StatusInterface::TYPE_INITIAL && $value['type'] != \Mothership\StateMachine\StatusInterface::TYPE_EXCEPTION) {
                     $state                  = [
                         'name'             => $key,
                         'type'             => $value['type'],
@@ -173,6 +173,10 @@ abstract class StateMachineAbstract implements StateMachineInterface
                     } else {
                         $_transitions[] = sprintf($pattern, $from, $state['name'], $state['name']);
                     }
+                }
+            } else {
+                if ('type' == 'exception') {
+                    $_transitions[] = 'node [shape = doublecircle]; exception;';
                 }
             }
         }

@@ -1,0 +1,44 @@
+#class of the model
+class:
+  name: Mothership\StateMachine\Examples\Exception\ExceptionWorkflow
+  args: []
+
+#definition of the states and transition...the order establishes the transition from one state to another
+#the name of each state is NOT case sensitive
+states:
+  # initialize the logging and stuff
+  start:
+    type: initial
+
+  exception:
+    type: exception
+
+  recover:
+    type: normal
+    transitions_from:   [exception]
+    transitions_to:     [recover]
+
+  prepare_collection:
+    type: normal
+    transitions_from:   [start, {status:  do_it_again, result:  true}, recover]
+    transitions_to:     [prepare_collection]
+
+  process_items:
+    type: normal
+    transitions_from:   [prepare_collection, {status:  has_more, result:  true}, {status:  process_items, result:  true}]
+    transitions_to:     [process_items]
+
+  has_more:
+    type: normal
+    transitions_from:   [{status:  process_items, result:  false}]
+    transitions_to:     [has_more]
+
+  do_it_again:
+    type: normal
+    transitions_from:   [{status:  has_more, result:  false}]
+    transitions_to:     [do_it_again]
+
+  finish:
+    type: final
+    transitions_from:   [{status:  do_it_again, result:  false}]
+    transitions_to:     [finish]

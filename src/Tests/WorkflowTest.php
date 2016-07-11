@@ -44,7 +44,7 @@ class WorkflowTest extends \Mothership\StateMachine\Tests\StateMachineTestCase
 
     /**
      * @dataProvider workflowFailProvider
-     * @expectedException     Mothership\StateMachine\Exception\WorkflowException
+     * @expectedException    \Mothership\StateMachine\Exception\WorkflowException
      */
     public function testExceptionInConstructor($worklowClass, $arguments)
     {
