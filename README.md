@@ -286,7 +286,7 @@ This workflow is pretty advanced and IS NOT A STANDARD automata in terms of a DF
 
 It is not recommended to have a general exception handling like that one, especially if you don't know what your workflow is doing.
 
-[![Advanced Workflow](./src/Examples/Exception/Mothership_StateMachine_Examples_Exception_ExceptionStateMachine.png)](./src/Examples/Advanced)
+[![Exception Workflow](./src/Examples/Exception/Mothership_StateMachine_Examples_Exception_ExceptionStateMachine.png)](./src/Examples/Exception)
 
 
 # Tests
