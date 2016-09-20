@@ -67,7 +67,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     public function __construct(array $args = [])
     {
-        $this->language = new ExpressionLanguage();
+        //$this->language = new ExpressionLanguage();
 
         foreach ($args as $key => $value) {
             $this->vars[$key] = $value;
