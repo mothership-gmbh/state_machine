@@ -254,6 +254,53 @@ Just do it like that:
 
 ```
 
+## Exception handling
+
+You can use exception handling in different cases.
+
+### Define an exception state
+
+This is not a typical FSA. But defining an external exception can help you to build more tolerant state machines. 
+However you should be very careful with this one. Defining an exception state can lead to some bad design decisions as you leave the exception handling into the responsibility of the appropriate exception state.
+
+Consider the usage of the exception state very carefully: 
+
+ * Do i need a general exception handling. If you need a centralized exception handling this could be useful but you can also build try-catch blocks in every state
+ * Do i need to re-run a failed transition? You can use the exception state to re-run the state machine from a defined transition. Just set the transition in the yaml file.
+ 
+### Catch the run method
+
+Wrap a try-catch around the run method and build a custom exception handler. Useful to have it in a centralized way. However it is difficult to return to a working state again.
+
+```
+  public function run(array $args = [])
+  {
+    try {
+        parent::run($args);
+    } catch (WorkflowException $e) {
+        $this->handleException('Workflow', $e);
+    } catch (StatusException $e) {
+        $this->handleException('Workflow', $e);
+    } catch (\Exception $e) {
+        $this->handleException('General', $e);
+    }
+  }
+```
+
+### Catch in the states
+
+Catch any exception which you want to control. It is recommended to be as specific as possible.
+
+```
+test_state()
+{
+    try {
+    } catch (\Highest\Exception $e) {
+        echo $e->getMessage();
+    }
+}
+```
+
 
 # More examples
 
