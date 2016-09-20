@@ -7,9 +7,12 @@
  */
 namespace Mothership\StateMachine;
 
+use Mothership\Exception\Exception;
 use Mothership\StateMachine\Exception\StatusException;
 use Mothership\StateMachine\Exception\TransitionException;
 use Mothership\StateMachine\Exception\WorkflowException;
+
+use \Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * Class WorkflowAbstract.
@@ -49,6 +52,13 @@ abstract class WorkflowAbstract implements WorkflowInterface
     protected $output;
 
     /**
+     * Used to evaluate the return values http://symfony.com/doc/current/components/expression_language.html
+     *
+     * @var  \Symfony\Component\ExpressionLanguage\ExpressionLanguage
+     */
+    protected $language;
+
+    /**
      * Assign all arguments to keys.
      *
      * @param array $args
@@ -57,6 +67,8 @@ abstract class WorkflowAbstract implements WorkflowInterface
      */
     public function __construct(array $args = [])
     {
+        $this->language = new ExpressionLanguage();
+
         foreach ($args as $key => $value) {
             $this->vars[$key] = $value;
         }
@@ -275,10 +287,12 @@ abstract class WorkflowAbstract implements WorkflowInterface
 
             } catch (\Exception $e) {
                 if (method_exists($this, 'exception')) {
+                    call_user_func([$this, 'exception'], [$e]);
                     $nextState = $this->getNextStateFrom('exception');
-
                     $this->setState($nextState);
                     continue;
+                } else {
+                    throw $e;
                 }
             }
 
@@ -410,7 +424,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
             /* @var \Mothership\StateMachine\Transition $transition */
             foreach ($status->getTransitions() as $transition) {
 
-                // FIX transiction from
+                // FIX transittion from
                 if ($currentTransition == $transition->getFrom()) {
 
                     /*
@@ -418,6 +432,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                      * we need to check, if the condition is also set
                      */
                     if (true === $transition->hasCondition() && $condition === $transition->getCondition()) {
+                        //$this->language->evaluate('test == true', ['return' => false]);
                         return $transition->getStatus();
                     }
 
@@ -427,7 +442,7 @@ abstract class WorkflowAbstract implements WorkflowInterface
                 }
             }
         }
-        $error = "\nδ: (X × Z → Z) " . sprintf('[%s] x [%s] → [%s] ', $condition, $currentTransition, 'NULL');
+        $error = "\nδ: (X × Z → Z) " . sprintf('return value [%s] x state_source [%s] → state_target[%s] ', $condition, $currentTransition, 'MISSING');
         throw new TransitionException($error);
     }
 }
