@@ -14,8 +14,10 @@ namespace Mothership\StateMachine;
  *
  * @author    Don Bosco van Hoi <vanhoi@mothership.de>
  * @copyright 2016 Mothership GmbH
- *
+ * 
  * @link      http://www.mothership.de/
+ *
+ * @deprecated 
  */
 abstract class CollectionWorkflowAbstract extends WorkflowAbstract
 {
