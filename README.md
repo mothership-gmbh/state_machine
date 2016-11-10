@@ -30,7 +30,7 @@ You can use composer to directly install in in your project. Do not use the mast
 
 ```
 "require": {
-	"mothership/state_machine": "v1.0.2"
+	"mothership/state_machine": "v1.3.*"
 }
 
 ```
