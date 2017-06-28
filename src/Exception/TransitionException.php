@@ -7,8 +7,6 @@
  */
 namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
-
 /**
  * Class TransitionException.
  *
@@ -18,6 +16,6 @@ use Mothership\Exception\ExceptionAbstract;
  *
  * @link      http://www.mothership.de/
  */
-class TransitionException extends ExceptionAbstract
+class TransitionException extends \Exception
 {
 }
