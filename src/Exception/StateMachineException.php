@@ -7,8 +7,6 @@
  */
 namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
-
 /**
  * Class StateMachineException.
  *
@@ -18,6 +16,6 @@ use Mothership\Exception\ExceptionAbstract;
  *
  * @link      http://www.mothership.de/
  */
-class StateMachineException extends ExceptionAbstract
+class StateMachineException extends \Exception
 {
 }

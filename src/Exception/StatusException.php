@@ -7,7 +7,6 @@
  */
 namespace Mothership\StateMachine\Exception;
 
-use Mothership\Exception\ExceptionAbstract;
 
 /**
  * Class StatusException.
@@ -18,6 +17,6 @@ use Mothership\Exception\ExceptionAbstract;
  *
  * @link      http://www.mothership.de/
  */
-class StatusException extends ExceptionAbstract
+class StatusException extends \Exception
 {
 }

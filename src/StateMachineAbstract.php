@@ -100,6 +100,8 @@ abstract class StateMachineAbstract implements StateMachineInterface
                     $yaml_fixed['states'][] = $state;
                 }
             }
+            
+            $yaml_fixed['yaml'] = $this->configuration;
 
             return $yaml_fixed;
         } catch (\Symfony\Component\Yaml\Exception\ParseException $ex) {
